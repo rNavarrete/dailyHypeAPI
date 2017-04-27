@@ -70,7 +70,7 @@ function scrapeSneakerNews() {
                 articleSource2['title'].push( $(this).text());
             });
             // extract article images
-            $("li:nth-child(2) > div > a > img").each(function () {
+            $("li > div > a > img").each(function () {
                 articleSource2['image'].push( $(this).attr("src"));
             });
             // // extract article URL
