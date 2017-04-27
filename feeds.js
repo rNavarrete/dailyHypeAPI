@@ -70,7 +70,7 @@ function scrapeSneakerNews() {
                 articleSource2['title'].push( $(this).text());
             });
             // extract article images
-            $(".wp-post-image").each(function () {
+            $("li:nth-child(2) > div > a > img").each(function () {
                 articleSource2['image'].push( $(this).attr("src"));
             });
             // // extract article URL
@@ -101,7 +101,7 @@ function setArticlesToCorrectOrder(source1, source2) {
             orderedArticles['title'].push(source2['title'][i]);
     });
     orderedArticles['title'] = orderedArticles['title'].filter(Boolean);
-    source2['author'].map(function (e, i) {
+    source1['author'].map(function (e, i) {
         orderedArticles['author'].push(source1['author'][i]);
         orderedArticles['author'].push(source2['author'][i]);
     });
