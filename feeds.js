@@ -97,27 +97,31 @@ function setArticlesToCorrectOrder(source1, source2) {
         'url': [],
     };
     source2['title'].map(function (e, i) {
-        orderedArticles['title'].push(source1['title'][i]);
-        orderedArticles['title'].push(source2['title'][i]);
+            orderedArticles['title'].push(source1['title'][i]);
+            orderedArticles['title'].push(source2['title'][i]);
     });
-    // zip the authors arrays from the sources into one
+    orderedArticles['title'] = orderedArticles['title'].filter(Boolean);
     source2['author'].map(function (e, i) {
         orderedArticles['author'].push(source1['author'][i]);
         orderedArticles['author'].push(source2['author'][i]);
     });
+    orderedArticles['author'] = orderedArticles['author'].filter(Boolean);
     // zip the image arrays from the sources into one
     source2['image'].map(function (e, i) {
         orderedArticles['image'].push(source1['image'][i]);
         orderedArticles['image'].push(source2['image'][i]);
     });
+    orderedArticles['image'] = orderedArticles['image'].filter(Boolean);
     source2['date'].map(function (e, i) {
         orderedArticles['date'].push(source1['date'][i]);
         orderedArticles['date'].push(source2['date'][i]);
     });
+    orderedArticles['date'] = orderedArticles['date'].filter(Boolean);
     source2['url'].map(function (e, i) {
         orderedArticles['url'].push(source1['url'][i]);
         orderedArticles['url'].push(source2['url'][i]);
     });
+    orderedArticles['url'] = orderedArticles['url'].filter(Boolean);
     return orderedArticles;
 }
 
