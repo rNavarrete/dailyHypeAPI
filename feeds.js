@@ -15,11 +15,12 @@ module.exports.releases = function () {
 }
 
 function scrapeSneakerNews() {
-    var article = {
+    var articleSource1 = {
     'title': [],
     'author': [],
     'image': [],
     'date': [],
+    'url': [],
     };
     jsdom.env({
         url: "https://sneakernews.com/",
@@ -28,26 +29,94 @@ function scrapeSneakerNews() {
             var $ = window.$;
             // extract article titles
             $(".header-title").each(function () {
-                article['title'].push( $(this).text());
+                articleSource1['title'].push( $(this).text().replace("  ", ""));
             });
             // extract article images
             $(".post-data > p > a > img").each(function () {
-                article['image'].push( $(this).attr("src"));
+                articleSource1['image'].push( $(this).attr("src"));
             });
             // extract article author
             $(".date-and-name > p > span > a").each(function () {
-                article['author'].push($(this).text());
+                articleSource1['author'].push($(this).text());
             });
             // extract article date
             $(".date-and-name > p > span").each(function () {
-                article['date'].push($(this).first().text().replace(/(?=BY).*/, ""));
+                articleSource1['date'].push($(this).first().text().replace(/(?=BY).*/, ""));
             });
+            // extract article URL
+            $(".post-header > h2 > a").each(function () {
+                articleSource1['url'].push($(this).attr("href"));
+            });
+        }
+    })
+
+    var articleSource2 = {
+    'title': [],
+    'author': [],
+    'image': [],
+    'date': [],
+    'url': [],
+    };
+
+    jsdom.env({
+        url: "https://sneakerfreaker.com/",
+        scripts: ["http://code.jquery.com/jquery.js"],
+        done: function (err, window) {
+            var $ = window.$;
+            // extract article titles
+            $("#main > div > ul > li > div > h2 > a").each(function () {
+                articleSource2['title'].push( $(this).text());
+            });
+            // extract article images
+            $(".wp-post-image").each(function () {
+                articleSource2['image'].push( $(this).attr("src"));
+            });
+            // // extract article URL
+            $("#main > div > ul > li > div > h2 > ").each(function () {
+                articleSource2['url'].push($(this).attr("href"));
+            });
+            var orderdArticles = {};
+            orderdArticles = setArticlesToCorrectOrder(articleSource1, articleSource2);
             // write to the .json file
-            fs.writeFile(articlesFile, JSON.stringify(article, null, 2), function(err) {
+            fs.writeFile(articlesFile, JSON.stringify(orderdArticles, null, 2), function(err) {
                 console.log('JSON saved to ' + articlesFile);
             });
         }
     })
+}
+
+
+function setArticlesToCorrectOrder(source1, source2) {
+    var orderedArticles = {
+        'title': [],
+        'author': [],
+        'image': [],
+        'date': [],
+        'url': [],
+    };
+    source2['title'].map(function (e, i) {
+        orderedArticles['title'].push(source1['title'][i]);
+        orderedArticles['title'].push(source2['title'][i]);
+    });
+    // zip the authors arrays from the sources into one
+    source2['author'].map(function (e, i) {
+        orderedArticles['author'].push(source1['author'][i]);
+        orderedArticles['author'].push(source2['author'][i]);
+    });
+    // zip the image arrays from the sources into one
+    source2['image'].map(function (e, i) {
+        orderedArticles['image'].push(source1['image'][i]);
+        orderedArticles['image'].push(source2['image'][i]);
+    });
+    source2['date'].map(function (e, i) {
+        orderedArticles['date'].push(source1['date'][i]);
+        orderedArticles['date'].push(source2['date'][i]);
+    });
+    source2['url'].map(function (e, i) {
+        orderedArticles['url'].push(source1['url'][i]);
+        orderedArticles['url'].push(source2['url'][i]);
+    });
+    return orderedArticles;
 }
 
 function scrapeReleaseDates() {
