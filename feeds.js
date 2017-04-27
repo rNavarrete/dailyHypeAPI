@@ -29,7 +29,9 @@ function scrapeSneakerNews() {
             var $ = window.$;
             // extract article titles
             $(".header-title").each(function () {
-                articleSource1['title'].push( $(this).text().replace("  ", ""));
+                var cleanedTitle = ""
+                cleanedTitle = $(this).text().trim();
+                articleSource1['title'].push(cleanedTitle);
             });
             // extract article images
             $(".post-data > p > a > img").each(function () {
