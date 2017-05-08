@@ -70,7 +70,7 @@ function scrapeSneakerNews() {
             });
             // extract article images
             $("li > div > a > img").each(function () {
-               articleSource2['image'].push( $(this).attr("src").replace("–", "%E2%80%93").replace("é", "e%CC%81").replace("'", "%E2%80%99S"));
+               articleSource2['image'].push( $(this).attr("src").replace("–", "%E2%80%93").replace("é", "e%CC%81").replace("’", "%E2%80%99"));
             });
             // // extract article URL
             $("#main > div > ul > li > div > h2 > ").each(function () {
