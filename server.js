@@ -1,11 +1,14 @@
 var express = require('express');
+var pg = require('pg');
+const connectionString = process.env.DATABASE_URL || 'postgres://localhost:5432/template1';
+const path = require('path');
 var fs = require('fs');
 var feed = require('./feeds');
 var articlesFile = 'cache/articles.json';
 var releasesFile = 'cache/releases.json';
 
-
-var app = express()
+var app = express();
+app.use(express.bodyParser());
 
 app.get('/articles', function (req, res) {
     feed.articles();
@@ -18,5 +21,35 @@ app.get('/releases', function (req, res) {
     results = JSON.parse(fs.readFileSync(releasesFile));
     res.json(results)
 })
+
+app.post('/article', (req, res, next) => {
+  const results = [];
+  // Grab data from http request
+  console.log(req.body)
+  const data = {title: req.body.title, author: req.body.author, image: req.body.image,url: req.body.url, source: req.body.source};
+  // Get a Postgres client from the connection pool
+  pg.connect(connectionString, (err, client, done) => {
+    // Handle connection errors
+    if(err) {
+      done();
+      console.log(err);
+      return res.status(500).json({success: false, data: err});
+    }
+    // SQL Query > Insert Data
+    client.query('INSERT INTO articles(title, author, image, url, source ) values($1, $2, $3, $4, $5)',
+    [data.title, data.author, data.image, data.url, data.source]);
+    // SQL Query > Select Data
+    const query = client.query('SELECT * FROM items ORDER BY id ASC');
+    // Stream results back one row at a time
+    query.on('row', (row) => {
+      results.push(row);
+    });
+    // After all data is returned, close connection and return results
+    query.on('end', () => {
+      done();
+      return res.json(results);
+    });
+  });
+});
 
 app.listen(process.env.PORT || 5000)

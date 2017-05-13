@@ -4,6 +4,10 @@ var articlesFile = 'cache/articles.json';
 var releasesFile = 'cache/releases.json';
 var csv = require('csv');
 var jsdom = require("jsdom");
+const express = require('express');
+const router = express.Router();
+const pg = require('pg');
+const connectionString = process.env.DATABASE_URL || 'postgres://localhost:5432/template1';
 
 module.exports.articles = function () {
     scrapeSneakerNews();
