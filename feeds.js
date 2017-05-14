@@ -4,6 +4,10 @@ var articlesFile = 'cache/articles.json';
 var releasesFile = 'cache/releases.json';
 var csv = require('csv');
 var jsdom = require("jsdom");
+const express = require('express');
+const router = express.Router();
+const pg = require('pg');
+const connectionString = process.env.DATABASE_URL || 'postgres://localhost:5432/template1';
 
 module.exports.articles = function () {
     scrapeSneakerNews();
@@ -77,11 +81,7 @@ function scrapeSneakerNews() {
                 articleSource2['url'].push($(this).attr("href"));
             });
             var orderdArticles = {};
-            orderdArticles = setArticlesToCorrectOrder(articleSource1, articleSource2);
-            // write to the .json file
-            fs.writeFile(articlesFile, JSON.stringify(orderdArticles, null, 2), function(err) {
-                console.log('JSON saved to ' + articlesFile);
-            });
+            setArticlesToCorrectOrder(articleSource1, articleSource2);
         }
     })
 }
@@ -94,10 +94,11 @@ function setArticlesToCorrectOrder(source1, source2) {
         'image': [],
         'date': [],
         'url': [],
+        'source': []
     };
     source2['title'].map(function (e, i) {
-            orderedArticles['title'].push(source1['title'][i]);
-            orderedArticles['title'].push(source2['title'][i]);
+        orderedArticles['title'].push(source1['title'][i]);
+        orderedArticles['title'].push(source2['title'][i]);
     });
     orderedArticles['title'] = orderedArticles['title'].filter(Boolean);
     source1['author'].map(function (e, i) {
@@ -121,7 +122,21 @@ function setArticlesToCorrectOrder(source1, source2) {
         orderedArticles['url'].push(source2['url'][i]);
     });
     orderedArticles['url'] = orderedArticles['url'].filter(Boolean);
-    return orderedArticles;
+    // insert the articles into the database:
+    pg.connect(connectionString, (err, client, done) => {
+        // Handle connection errors
+        if (err) {
+            done();
+            console.log(err);
+            return res.status(500).json({ success: false, data: err });
+        }
+        // SQL Query > Insert Data
+        for (var i = 0; i < orderedArticles['title'].length; i++) {
+            client.query('INSERT INTO articles(title, author, image, url, source ) values($1, $2, $3, $4, $5) ON CONFLICT DO NOTHING;', [orderedArticles["title"][i], orderedArticles["author"][i], orderedArticles["image"][i], orderedArticles["url"][i], orderedArticles["source"][i]], function (err, result) {
+                if (err) throw err;
+            });
+        }
+    })
 }
 
 function scrapeReleaseDates() {
