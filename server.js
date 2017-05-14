@@ -17,11 +17,11 @@ app.use(express.bodyParser());
 //     res.json(results)
 // })
 
-// app.get('/releases', function (req, res) {
-//     feed.releases();
-//     results = JSON.parse(fs.readFileSync(releasesFile));
-//     res.json(results)
-// })
+app.get('/releases', function (req, res) {
+    feed.releases();
+    results = JSON.parse(fs.readFileSync(releasesFile));
+    res.json(results)
+})
 
 app.post('/article', (req, res, next) => {
   const results = [];
