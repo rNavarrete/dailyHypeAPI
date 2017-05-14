@@ -76,4 +76,12 @@ app.get('/articles', (req, res, next) => {
   });
 });
 
+var CronJob = require('cron').CronJob;
+
+var job = new CronJob('5 * * * * *', function () {
+  console.log('You will see this message every second');
+  feed.articles();
+}, null, true, 'America/Los_Angeles');
+job.start();
+
 app.listen(process.env.PORT || 5000)
