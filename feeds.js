@@ -118,8 +118,8 @@ function setArticlesToCorrectOrder(source1, source2) {
     });
     orderedArticles['date'] = orderedArticles['date'].filter(Boolean);
     source2['url'].map(function (e, i) {
-        orderedArticles['url'].push(source1['url'][i]);
-        orderedArticles['url'].push(source2['url'][i]);
+        orderedArticles['url'].push(encodeURI(source1['url'][i]));
+        orderedArticles['url'].push(encodeURI(source2['url'][i]));
     });
     orderedArticles['url'] = orderedArticles['url'].filter(Boolean);
     // insert the articles into the database:
