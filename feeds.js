@@ -38,7 +38,10 @@ function scrapeSneakerNews() {
             });
             // extract article images
             $(".post-data > p > a > img").each(function () {
-                articleSource1['image'].push(encodeURI($(this).attr("src")));
+                link = $(this).attr("src")
+                encodedURL = encodeURI(link)
+                console.log(encodedURL)
+                articleSource1['image'].push(encodedURL);
             });
             // extract article author
             $(".date-and-name > p > span > a").each(function () {
