@@ -6,7 +6,9 @@ var fs = require('fs');
 var feed = require('./feeds');
 var articlesFile = 'cache/articles.json';
 var releasesFile = 'cache/releases.json';
-pg.defaults.ssl = true;
+if (process.env.DATABASE_URL){
+  pg.defaults.ssl = true;
+}
 
 var app = express();
 app.use(express.bodyParser());
