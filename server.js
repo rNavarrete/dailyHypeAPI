@@ -79,6 +79,34 @@ app.get('/articles', (req, res, next) => {
   });
 });
 
+
+app.post('/view', (req, res, next) => {
+  // Grab data from http request
+  console.log(req.body)
+  const data = {id: req.body.id, view: req.body.views};
+  // Get a Postgres client from the connection pool
+  pg.connect(connectionString, (err, client, done) => {
+    // Handle connection errors
+    if(err) {
+      done();
+      console.log(err);
+      return res.status(500).json({success: false, data: err});
+    }
+    // SQL Query > Insert Data
+  const query = client.query('UPDATE articles SET viewcount = viewcount + 1 WHERE id = ($1) AND viewcount = ($2)',
+    [data.id, data.view]);
+    query.on('row', (row) => {
+      results.push(row);
+    });
+    query.on('end', () => {
+      done();
+      return res.status(200).json({ success: true });
+    });
+  });
+});
+
+
+
 var CronJob = require('cron').CronJob;
 
 var job = new CronJob('* 10 * * * *', function () {
