@@ -140,12 +140,13 @@ function setArticlesToCorrectOrder(source1, source2) {
 }
 
 function scrapeReleaseDates() {
-    var releaseDates = {
-        'date': [],
-        'title': [],
+    var releases = {
+        'releaseDate': [],
+        'model': [],
         'price': [],
         'image': [],
     };
+
     jsdom.env({
         url: "https://sneakernews.com/release-dates",
         scripts: ["http://code.jquery.com/jquery.js"],
@@ -153,24 +154,42 @@ function scrapeReleaseDates() {
             var $ = window.$;
             // extract release date
             $(".release-date").each(function () {
-                releaseDates['date'].push($(this).text());
+                releases['releaseDate'].push($(this).text());
             });
             // extract article title
             $(".post-header > h2 > a > span").each(function () {
-                releaseDates['title'].push($(this).text());
+                releases['model'].push($(this).text());
             });
             // extract article price
             $(".post-header > div > p > span").each(function () {
-                releaseDates['price'].push($(this).text());
+                releases['price'].push($(this).text());
             });
             // extract shoe image
             $(".release-img > a > img").each(function () {
-                releaseDates['image'].push($(this).attr("src"));
+                releases['image'].push($(this).attr("src"));
+            });
+            updateReleasesTable(releases)
+        }
+    });
+}
+
+function updateReleasesTable(releaseData) {
+     pg.connect(connectionString, (err, client, done) => {
+        // Handle connection errors
+        if (err) {
+            done();
+            console.log(err);
+            return res.status(500).json({ success: false, data: err });
+        }
+        // SQL Query > Insert Data
+        for (var i = 0; i < releaseData['model'].length; i++) {
+            client.query('INSERT INTO releases(model, image, price, releasedate ) values($1, $2, $3, $4) ON CONFLICT (model) DO UPDATE SET (releasedate) = ($4);', [releaseData["model"][i], releaseData["image"][i], releaseData["price"][i], releaseData["releaseDate"][i]], function (err, result) {
+                if (err) throw err;
             });
             // write to the .json file
-            fs.writeFile(releasesFile, JSON.stringify(releaseDates, null, 2), function (err) {
-                console.log('JSON saved to ' + releasesFile);
-            });
+            //fs.writeFile(releasesFile, JSON.stringify(releaseDates, null, 2), function (err) {
+            //  console.log('JSON saved to ' + releasesFile);
+            //});
         }
-    })
+    });
 }
