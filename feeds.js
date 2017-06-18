@@ -11,10 +11,12 @@ const connectionString = process.env.DATABASE_URL || 'postgres://localhost:5432/
 
 module.exports.articles = function () {
     scrapeSneakerNews();
+    console.log("Updated articles.")
 }
 
 module.exports.releases = function () {
     scrapeReleaseDates();
+    console.log("Updated releases.")
 }
 
 function scrapeSneakerNews() {
