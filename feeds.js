@@ -198,5 +198,6 @@ function updateReleasesTable(releaseData) {
             //  console.log('JSON saved to ' + releasesFile);
             //});
         }
+        done();
      });
 }
