@@ -136,6 +136,7 @@ function setArticlesToCorrectOrder(source1, source2) {
         }
         // SQL Query > Insert Data
         for (var i = 0; i < orderedArticles['title'].length; i++) {
+            console.log(orderedArticles['title'])
             client.query('INSERT INTO articles(title, author, image, url, source ) values($1, $2, $3, $4, $5) ON CONFLICT DO NOTHING;', [orderedArticles["title"][i], orderedArticles["author"][i], orderedArticles["image"][i], orderedArticles["url"][i], orderedArticles["source"][i]], function (err, result) {
                 if (err) throw err;
             });
