@@ -83,10 +83,10 @@ function scrapeSneakerNews() {
             });
             var orderdArticles = {};
             setArticlesToCorrectOrder(articleSource1, articleSource2);
-            window.setTimeout(function () {
-                console.log("Exiting now.")
-                process.exit()
-            }, 30000);
+            // window.setTimeout(function () {
+            //     console.log("Exiting now.")
+            //     process.exit()
+            // }, 30000);
         }
     })
 }
@@ -142,6 +142,7 @@ function setArticlesToCorrectOrder(source1, source2) {
                 if (err) throw err;
             });
         }
+
     })
 }
 
