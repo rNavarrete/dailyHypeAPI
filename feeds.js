@@ -85,7 +85,7 @@ function scrapeSneakerNews() {
             setArticlesToCorrectOrder(articleSource1, articleSource2);
             window.setTimeout(function() {
                 process.exit()
-            }, 10);
+            }, 30000);
         }
     })
 }
