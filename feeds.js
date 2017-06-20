@@ -11,7 +11,6 @@ const connectionString = process.env.DATABASE_URL || 'postgres://localhost:5432/
 
 module.exports.articles = function () {
     scrapeSneakerNews();
-    console.log("Updated articles.")
 }
 
 module.exports.releases = function () {
@@ -84,6 +83,9 @@ function scrapeSneakerNews() {
             });
             var orderdArticles = {};
             setArticlesToCorrectOrder(articleSource1, articleSource2);
+            window.setTimeout(function() {
+                process.exit()
+            }, 10);
         }
     })
 }
@@ -193,5 +195,5 @@ function updateReleasesTable(releaseData) {
             //  console.log('JSON saved to ' + releasesFile);
             //});
         }
-    });
+     });
 }
