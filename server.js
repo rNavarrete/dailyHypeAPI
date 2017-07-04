@@ -73,6 +73,33 @@ app.post('/article', (req, res, next) => {
   });
 });
 
+app.post('/search', (req, res, next) => {
+  const results = [];
+  // Grab data from http request
+  console.log(req.body)
+  const data = {query: req.body.query};
+  // Get a Postgres client from the connection pool
+  pg.connect(connectionString, (err, client, done) => {
+    // Handle connection errors
+    if(err) {
+      done();
+      console.log(err);
+      return res.status(500).json({success: false, data: err});
+    }
+    // SQL Query > Insert Data
+    const query = client.query("SELECT * FROM articles WHERE title ILIKE $1;", ['%' + data.query+ '%']);
+    // Stream results back one row at a time
+    query.on('row', (row) => {
+      results.push(row);
+    });
+    // After all data is returned, close connection and return results
+    query.on('end', () => {
+      done();
+      return res.json(results);
+    });
+  });
+});
+
 app.get('/articles', (req, res, next) => {
   const results = [];
   // Get a Postgres client from the connection pool
