@@ -15,7 +15,6 @@ module.exports.articles = function () {
 
 module.exports.releases = function () {
     scrapeReleaseDates();
-    console.log("Updated releases.")
 }
 
 function scrapeSneakerNews() {
@@ -175,12 +174,16 @@ function scrapeReleaseDates() {
                 releases['image'].push($(this).attr("src"));
             });
             updateReleasesTable(releases)
+            window.setTimeout(function () {
+                console.log("Exiting now.")
+                process.exit()
+            }, 10000);
         }
     });
 }
 
 function updateReleasesTable(releaseData) {
-     pg.connect(connectionString, (err, client, done) => {
+    pg.connect(connectionString, (err, client, done) => {
         // Handle connection errors
         if (err) {
             done();
@@ -189,6 +192,7 @@ function updateReleasesTable(releaseData) {
         }
         // SQL Query > Insert Data
         for (var i = 0; i < releaseData['model'].length; i++) {
+            console.log(releaseData['model'][i]);
             client.query('INSERT INTO releases(model, image, price, releasedate ) values($1, $2, $3, $4) ON CONFLICT (model) DO UPDATE SET (releasedate) = ($4);', [releaseData["model"][i], releaseData["image"][i], releaseData["price"][i], releaseData["releaseDate"][i]], function (err, result) {
                 if (err) throw err;
             });
