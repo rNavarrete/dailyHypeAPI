@@ -12,7 +12,7 @@
 
 function updateSneakerFeed() {
   feed.articles();
-  feed.scrapeReleaseDates();
+  feed.releases();
 }
 
 updateSneakerFeed();
