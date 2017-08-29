@@ -43,6 +43,31 @@ app.get('/releases', function (req, res) {
   });
 });
 
+app.post('/release', (req, res, next) => {
+  // Grab data from http request
+  console.log(req.body)
+  const data = {model: req.body.model, image: req.body.image, releaseDate: req.body.releaseDate, price: req.body.price, source: req.body.source};
+  // Get a Postgres client from the connection pool
+  pg.connect(connectionString, (err, client, done) => {
+    // Handle connection errors
+    if(err) {
+      done();
+      console.log(err);
+      return res.status(500).json({success: false, data: err});
+    }
+    // SQL Query > Insert Data
+  const query = client.query('INSERT INTO releases(model, image, price, releasedate ) values($1, $2, $3, $4) ON CONFLICT DO NOTHING;',
+    [data.model, data.image, data.price, data.releaseDate]);
+    query.on('row', (row) => {
+      results.push(row);
+    });
+    query.on('end', () => {
+      done();
+      return res.status(200).json({ success: true });
+    });
+  });
+});
+
 app.post('/article', (req, res, next) => {
   const results = [];
   // Grab data from http request

@@ -11,7 +11,7 @@
 // });
 
 function updateSneakerFeed() {
-  //feed.articles();
+  feed.articles();
   feed.releases();
 }
 
