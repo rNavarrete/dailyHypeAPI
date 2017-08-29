@@ -193,13 +193,9 @@ function updateReleasesTable(releaseData) {
         // SQL Query > Insert Data
         for (var i = 0; i < releaseData['model'].length; i++) {
             console.log(releaseData['model'][i]);
-            client.query('INSERT INTO releases(model, image, price, releasedate ) values($1, $2, $3, $4) ON CONFLICT (model) DO UPDATE SET (releasedate) = ($4);', [releaseData["model"][i], releaseData["image"][i], releaseData["price"][i], releaseData["releaseDate"][i]], function (err, result) {
+            client.query('INSERT INTO releases(model, image, price, releasedate ) values($1, $2, $3, $4) ON CONFLICT DO NOTHING;', [releaseData["model"][i], releaseData["image"][i], releaseData["price"][i], releaseData["releaseDate"][i]], function (err, result) {
                 if (err) throw err;
             });
-            // write to the .json file
-            //fs.writeFile(releasesFile, JSON.stringify(releaseDates, null, 2), function (err) {
-            //  console.log('JSON saved to ' + releasesFile);
-            //});
         }
      });
 }
