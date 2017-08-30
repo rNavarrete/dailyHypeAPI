@@ -112,7 +112,7 @@ app.post('/search', (req, res, next) => {
       return res.status(500).json({success: false, data: err});
     }
     // SQL Query > Insert Data
-    const query = client.query("SELECT * FROM articles WHERE title ILIKE $1 ORDER BY id DSC;" , ['%' + data.query+ '%']);
+    const query = client.query("SELECT * FROM articles WHERE title ILIKE $1 ORDER BY id DESC;", ['%' + data.query+ '%']);
     // Stream results back one row at a time
     query.on('row', (row) => {
       results.push(row);
