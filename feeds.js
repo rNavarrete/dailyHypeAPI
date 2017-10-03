@@ -134,7 +134,7 @@ function setArticlesToCorrectOrder(source1, source2) {
         if (err) {
             done();
             console.log(err);
-            return res.status(500).json({ success: false, data: err });
+            return err;
         }
         // SQL Query > Insert Data
         for (var i = 0; i < orderedArticles['title'].length; i++) {
@@ -190,7 +190,8 @@ function updateReleasesTable(releaseData) {
         if (err) {
             done();
             console.log(err);
-            return res.status(500).json({ success: false, data: err });
+            // return res.status(500).json({ success: false, data: err });
+            return err
         }
         client.query("DELETE FROM releases;", function (err, result) {
             if (err) throw err;
