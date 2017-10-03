@@ -79,7 +79,7 @@ function scrapeSneakerNews() {
             // $("li > div > a > img").each(function () {
             $(".col-hb-post-image.teaser > a > img").each(function () {
             //    articleSource2['image'].push(encodeURI($(this).attr("src")));
-               articleSource2['image'].push(encodeURI($(this).attr("srcset")));
+               articleSource2['image'].push($(this).attr("src"));
             });
             // // extract article URL
             // $("#main > div > ul > li > div > h2 > ").each(function () {
