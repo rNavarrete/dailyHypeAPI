@@ -70,6 +70,7 @@ function scrapeSneakerNews() {
             var $ = window.$;
             // extract article titles
             $("#main > div > ul > li > div > h2 > a").each(function () {
+                console.log(articleSource2['title'])
                 articleSource2['title'].push( $(this).text());
             });
             // extract article images
@@ -126,6 +127,7 @@ function setArticlesToCorrectOrder(source1, source2) {
         orderedArticles['url'].push(source2['url'][i]);
     });
     orderedArticles['url'] = orderedArticles['url'].filter(Boolean);
+    console.log(orderedArticles)
     // insert the articles into the database:
     pg.connect(connectionString, (err, client, done) => {
         // Handle connection errors

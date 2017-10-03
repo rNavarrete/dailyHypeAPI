@@ -13,12 +13,6 @@ if (process.env.DATABASE_URL){
 var app = express();
 app.use(express.bodyParser());
 
-// app.get('/articles', function (req, res) {
-//     feed.articles();
-//     results = JSON.parse(fs.readFileSync(articlesFile));
-//     res.json(results)
-// })
-
 app.get('/releases', function (req, res) {
     const results = [];
   // Get a Postgres client from the connection pool
