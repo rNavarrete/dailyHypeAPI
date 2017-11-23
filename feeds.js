@@ -2,7 +2,6 @@ var fs = require('fs');
 var path = require('path');
 var articlesFile = 'cache/articles.json';
 var releasesFile = 'cache/releases.json';
-var csv = require('csv');
 var jsdom = require("jsdom");
 const express = require('express');
 const router = express.Router();
