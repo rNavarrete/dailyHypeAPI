@@ -35,22 +35,27 @@ function scrapeSneakerNews() {
                 var cleanedTitle = ""
                 cleanedTitle = $(this).text().trim();
                 articleSource1['title'].push(cleanedTitle);
+                console.log("This should be a title Sneakernews: ", cleanedTitle)
             });
             // extract article images
             $(".post-data > p > a > img").each(function () {
                 articleSource1['image'].push(encodeURI($(this).attr("src")));
+                console.log("This should be a image URL: ", encodeURI($(this).attr("src")))
             });
             // extract article author
             $(".date-and-name > p > span > a").each(function () {
                 articleSource1['author'].push($(this).text())
+                console.log("This should be a author: ", $(this).text())
             });
             // extract article date
             $(".date-and-name > p > span").each(function () {
                 articleSource1['date'].push($(this).first().text().replace(/(?=BY).*/, ""));
+                console.log("This should be a date: ", $(this).first().text().replace(/(?=BY).*/, ""))
             });
             // extract article URL
             $(".post-header > h2 > a").each(function () {
                 articleSource1['url'].push($(this).attr("href"));
+                console.log("This should be a URL: ", $(this).attr("href"))
             });
         }
     })
@@ -72,19 +77,21 @@ function scrapeSneakerNews() {
             // extract article titles
             // $("#main > div > ul > li > div > h2 > a").each(function () {
             $(".title-wrapper > a > h2 > span").each(function () {
-                console.log(articleSource2['title'])
+                console.log("This should be article titles: ", articleSource2['title'])
                 articleSource2['title'].push( $(this).text());
             });
             // extract article images
             // $("li > div > a > img").each(function () {
-            $(".col-hb-post-image.teaser > a > img").each(function () {
-            //    articleSource2['image'].push(encodeURI($(this).attr("src")));
-               articleSource2['image'].push($(this).attr("src"));
-            });
-            // // extract article URL
-            // $("#main > div > ul > li > div > h2 > ").each(function () {
-            $(".col-hb-post-meta.meta > div.title-wrapper > a").each(function () {
-                articleSource2['url'].push($(this).attr("href"));
+                $(".col-hb-post-image.teaser > a > img").each(function () {
+                    //    articleSource2['image'].push(encodeURI($(this).attr("src")));
+                    articleSource2['image'].push($(this).attr("src"));
+                    console.log("This should be article images: ", $(this).attr("src"))
+                });
+                // // extract article URL
+                // $("#main > div > ul > li > div > h2 > ").each(function () {
+                    $(".col-hb-post-meta.meta > div.title-wrapper > a").each(function () {
+                        articleSource2['url'].push($(this).attr("href"));
+                        console.log("This should be article URL: ", $(this).attr("href"))
             });
             var orderdArticles = {};
             setArticlesToCorrectOrder(articleSource1, articleSource2);
