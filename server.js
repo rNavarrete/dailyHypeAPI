@@ -1,6 +1,7 @@
 var express = require('express');
 var pg = require('pg');
-const connectionString = process.env.DATABASE_URL+'?ssl=true' || 'postgres://localhost:5432/template1';
+// const connectionString = process.env.DATABASE_URL || 'postgres://localhost:5432/template1';
+const connectionString = 'postgres://xfhateqjmlgfry:1fc3ccd3c39c655648950f9bfc4af88f30958b2ae6a8fb9420d7d8952bdcb3b1@ec2-54-163-252-55.compute-1.amazonaws.com:5432/d558bbj2b9pcuv';
 const path = require('path');
 var fs = require('fs');
 var feed = require('./feeds');
