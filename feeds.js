@@ -5,7 +5,7 @@ var releasesFile = 'cache/releases.json';
 var jsdom = require("jsdom");
 const express = require('express');
 const router = express.Router();
-const pg = require('pg');
+const pg = require('pg').native;
 const connectionString = process.env.DATABASE_URL || 'postgres://localhost:5432/template1';
 
 module.exports.articles = function () {
@@ -209,6 +209,7 @@ function updateReleasesTable(releaseData) {
         client.query("DELETE FROM releases;", function (err, result) {
             if (err) throw err;
         });
+
         // SQL Query > Insert Data
         for (var i = 0; i < releaseData['model'].length; i++) {
             client.query('INSERT INTO releases(model, image, price, releasedate ) values($1, $2, $3, $4) ON CONFLICT DO NOTHING;', [releaseData["model"][i], releaseData["image"][i], releaseData["price"][i], releaseData["releaseDate"][i]], function (err, result) {

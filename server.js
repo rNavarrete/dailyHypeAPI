@@ -1,5 +1,5 @@
 var express = require('express');
-var pg = require('pg');
+var pg = require('pg').native;
 const connectionString = process.env.DATABASE_URL || 'postgres://localhost:5432/template1';
 const path = require('path');
 var fs = require('fs');
