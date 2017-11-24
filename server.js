@@ -16,7 +16,8 @@ app.use(express.bodyParser());
 app.get('/releases', function (req, res) {
     const results = [];
   // Get a Postgres client from the connection pool
-  pg.connect(connectionString, (err, client, done) => {
+  var pool = new pg.Pool()
+  pool.connect(function(err, client, done) {
     // Handle connection errors
     if(err) {
       done();
@@ -42,7 +43,8 @@ app.post('/release', (req, res, next) => {
   console.log(req.body)
   const data = {model: req.body.model, image: req.body.image, releaseDate: req.body.releaseDate, price: req.body.price, source: req.body.source};
   // Get a Postgres client from the connection pool
-  pg.connect(connectionString, (err, client, done) => {
+  var pool = new pg.Pool()
+  pool.connect(function(err, client, done) {
     // Handle connection errors
     if(err) {
       done();
