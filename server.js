@@ -15,7 +15,6 @@ console.log("This is the config.", config);
 
 var app = express();
 app.use(express.bodyParser());
-
 app.get('/releases', function (req, res) {
     const results = [];
   // Get a Postgres client from the connection pool
