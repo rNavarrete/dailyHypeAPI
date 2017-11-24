@@ -140,7 +140,7 @@ function setArticlesToCorrectOrder(source1, source2) {
     orderedArticles['url'] = orderedArticles['url'].filter(Boolean);
     console.log(orderedArticles)
     // insert the articles into the database:
-    var pool = new pg.Pool()
+    var pool = new pg.Pool(connectionString)
     pool.connect(function(err, client, done) {
         // Handle connection errors
         if (err) {
@@ -197,7 +197,7 @@ function scrapeReleaseDates() {
 }
 
 function updateReleasesTable(releaseData) {
-    var pool = new pg.Pool()
+    var pool = new pg.Pool(connectionString)
     pool.connect(function(err, client, done) {
         // Handle connection errors
         if (err) {
