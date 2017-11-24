@@ -5,7 +5,7 @@ var releasesFile = 'cache/releases.json';
 var jsdom = require("jsdom");
 const express = require('express');
 const router = express.Router();
-const pg = require('pg').native;
+const pg = require('pg');
 const connectionString = process.env.DATABASE_URL || 'postgres://localhost:5432/template1';
 
 module.exports.articles = function () {
