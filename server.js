@@ -1,12 +1,13 @@
 var express = require('express');
 var pg = require('pg');
-// const connectionString = process.env.DATABASE_URL || 'postgres://localhost:5432/template1';
-const connectionString = 'postgres://xfhateqjmlgfry:1fc3ccd3c39c655648950f9bfc4af88f30958b2ae6a8fb9420d7d8952bdcb3b1@ec2-54-163-252-55.compute-1.amazonaws.com:5432/d558bbj2b9pcuv';
+var parse = require('pg-connection-string').parse;
+var config = parse(process.env.DATABASE_URL || 'postgres://localhost:5432/template1')
 const path = require('path');
 var fs = require('fs');
 var feed = require('./feeds');
 var articlesFile = 'cache/articles.json';
 var releasesFile = 'cache/releases.json';
+
 if (process.env.DATABASE_URL){
   pg.defaults.ssl = true;
 }
@@ -18,7 +19,7 @@ app.use(express.bodyParser());
 app.get('/releases', function (req, res) {
     const results = [];
   // Get a Postgres client from the connection pool
-  var pool = new pg.Pool(connectionString)
+  var pool = new pg.Pool(config)
   pool.connect(function(err, client, done) {
     // Handle connection errors
     if(err) {
@@ -45,7 +46,7 @@ app.post('/release', (req, res, next) => {
   console.log(req.body)
   const data = {model: req.body.model, image: req.body.image, releaseDate: req.body.releaseDate, price: req.body.price, source: req.body.source};
   // Get a Postgres client from the connection pool
-  var pool = new pg.Pool(connectionString)
+  var pool = new pg.Pool(config)
   pool.connect(function(err, client, done) {
     // Handle connection errors
     if(err) {
@@ -72,7 +73,7 @@ app.post('/article', (req, res, next) => {
   console.log(req.body)
   const data = {title: req.body.title, author: req.body.author, image: req.body.image,url: req.body.url, source: req.body.source};
   // Get a Postgres client from the connection pool
-  var pool = new pg.Pool(connectionString)
+  var pool = new pg.Pool(config)
   pool.connect(function(err, client, done) {
     // Handle connection errors
     if(err) {
@@ -103,7 +104,8 @@ app.post('/search', (req, res, next) => {
   console.log(req.body)
   const data = {query: req.body.query};
   // Get a Postgres client from the connection pool
-  pg.connect(connectionString, (err, client, done) => {
+  var pool = new pg.Pool(config)
+  pool.connect(function(err, client, done) {
     // Handle connection errors
     if(err) {
       done();
@@ -127,7 +129,7 @@ app.post('/search', (req, res, next) => {
 app.get('/articles', (req, res, next) => {
   const results = [];
   // Get a Postgres client from the connection pool
-  var pool = new pg.Pool(connectionString)
+  var pool = new pg.Pool(config)
   pool.connect(function(err, client, done) {
     // Handle connection errors
     if(err) {
@@ -155,7 +157,7 @@ app.post('/view', (req, res, next) => {
   console.log(req.body)
   const data = {id: req.body.id, view: req.body.views};
   // Get a Postgres client from the connection pool
-  var pool = new pg.Pool(connectionString)
+  var pool = new pg.Pool(config)
   pool.connect(function(err, client, done) {
     // Handle connection errors
     if(err) {

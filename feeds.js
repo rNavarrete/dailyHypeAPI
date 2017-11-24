@@ -6,7 +6,10 @@ var jsdom = require("jsdom");
 const express = require('express');
 const router = express.Router();
 const pg = require('pg');
-const connectionString = process.env.DATABASE_URL || 'postgres://localhost:5432/template1';
+var parse = require('pg-connection-string').parse;
+var config = parse(process.env.DATABASE_URL || 'postgres://localhost:5432/template1')
+//const connectionString = process.env.DATABASE_URL || 'postgres://localhost:5432/template1';
+
 
 module.exports.articles = function () {
     scrapeSneakerNews();
@@ -140,7 +143,7 @@ function setArticlesToCorrectOrder(source1, source2) {
     orderedArticles['url'] = orderedArticles['url'].filter(Boolean);
     console.log(orderedArticles)
     // insert the articles into the database:
-    var pool = new pg.Pool(connectionString)
+    var pool = new pg.Pool(config)
     pool.connect(function(err, client, done) {
         // Handle connection errors
         if (err) {
@@ -197,7 +200,7 @@ function scrapeReleaseDates() {
 }
 
 function updateReleasesTable(releaseData) {
-    var pool = new pg.Pool(connectionString)
+    var pool = new pg.Pool(config)
     pool.connect(function(err, client, done) {
         // Handle connection errors
         if (err) {
