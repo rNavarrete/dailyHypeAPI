@@ -70,7 +70,8 @@ app.post('/article', (req, res, next) => {
   console.log(req.body)
   const data = {title: req.body.title, author: req.body.author, image: req.body.image,url: req.body.url, source: req.body.source};
   // Get a Postgres client from the connection pool
-  pg.connect(connectionString, (err, client, done) => {
+  var pool = new pg.Pool(connectionString)
+  pool.connect(function(err, client, done) {
     // Handle connection errors
     if(err) {
       done();
@@ -124,7 +125,8 @@ app.post('/search', (req, res, next) => {
 app.get('/articles', (req, res, next) => {
   const results = [];
   // Get a Postgres client from the connection pool
-  pg.connect(connectionString, (err, client, done) => {
+  var pool = new pg.Pool(connectionString)
+  pool.connect(function(err, client, done) {
     // Handle connection errors
     if(err) {
       done();
@@ -151,7 +153,8 @@ app.post('/view', (req, res, next) => {
   console.log(req.body)
   const data = {id: req.body.id, view: req.body.views};
   // Get a Postgres client from the connection pool
-  pg.connect(connectionString, (err, client, done) => {
+  var pool = new pg.Pool(connectionString)
+  pool.connect(function(err, client, done) {
     // Handle connection errors
     if(err) {
       done();
