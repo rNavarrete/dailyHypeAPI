@@ -11,7 +11,7 @@ var releasesFile = 'cache/releases.json';
 if (process.env.DATABASE_URL){
   pg.defaults.ssl = true;
 }
-console.log(process.env.DATABASE_URL);
+console.log(config);
 
 var app = express();
 app.use(express.bodyParser());
