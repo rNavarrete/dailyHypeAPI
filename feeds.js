@@ -140,7 +140,8 @@ function setArticlesToCorrectOrder(source1, source2) {
     orderedArticles['url'] = orderedArticles['url'].filter(Boolean);
     console.log(orderedArticles)
     // insert the articles into the database:
-    pg.connect(connectionString, (err, client, done) => {
+    var pool = new pg.Pool()
+    pool.connect(function(err, client, done) {
         // Handle connection errors
         if (err) {
             done();
@@ -196,7 +197,8 @@ function scrapeReleaseDates() {
 }
 
 function updateReleasesTable(releaseData) {
-    pg.connect(connectionString, (err, client, done) => {
+    var pool = new pg.Pool()
+    pool.connect(function(err, client, done) {
         // Handle connection errors
         if (err) {
             done();
@@ -207,7 +209,6 @@ function updateReleasesTable(releaseData) {
         client.query("DELETE FROM releases;", function (err, result) {
             if (err) throw err;
         });
-
         // SQL Query > Insert Data
         for (var i = 0; i < releaseData['model'].length; i++) {
             client.query('INSERT INTO releases(model, image, price, releasedate ) values($1, $2, $3, $4) ON CONFLICT DO NOTHING;', [releaseData["model"][i], releaseData["image"][i], releaseData["price"][i], releaseData["releaseDate"][i]], function (err, result) {
