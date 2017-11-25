@@ -224,7 +224,7 @@ function updateReleasesTable(releaseData) {
                 text: 'INSERT INTO releases(model, image, price, releasedate ) values($1, $2, $3, $4) ON CONFLICT DO NOTHING;',
                 values: [releaseData["model"][i], releaseData["image"][i], releaseData["price"][i], releaseData["releaseDate"][i]],
               }
-            var res = client(query, (err, result) => {
+            client(query, (err, res) => {
                 if (err) throw err;
             });
         }
