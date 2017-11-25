@@ -77,7 +77,7 @@ app.post('/article', (req, res, next) => {
       const query = client.query('SELECT * FROM items ORDER BY id ASC');
       // Stream results back one row at a time
 
-      var r = await client.query('INSERT INTO articles(title, author, image, url, source ) values($1, $2, $3, $4, $5)')
+      client.query('INSERT INTO articles(title, author, image, url, source ) values($1, $2, $3, $4, $5)', (err, res) => {
       r.rows.forEach(row => {
         results.push(row);
       });
