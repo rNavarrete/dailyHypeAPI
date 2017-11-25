@@ -85,7 +85,6 @@ app.post('/article', (req, res, next) => {
       // query.on('end', () => {
       // done();
       client.end();
-      console.log("Are there any results here: ", results)
       return res.json(results);
       // });
     });
@@ -148,8 +147,10 @@ app.post('/search', (req, res, next) => {
         results.push(row);
       });
       // After all data is returned, close connection and return results
-      client.end();
+      console.log("Are there any results here: ", results)
       return res.json(results);
+     client.end();
+
       });
     });
   });
