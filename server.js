@@ -149,7 +149,7 @@ app.post('/search', (req, res, next) => {
       // After all data is returned, close connection and return results
       console.log("Are there any results here: ", results)
       client.end();
-      return JSON.parse(results);
+      return JSON.stringify(results);
       });
     });
   });
