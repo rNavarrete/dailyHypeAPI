@@ -85,6 +85,7 @@ app.post('/article', (req, res, next) => {
       // query.on('end', () => {
       // done();
       client.end();
+      console.log("Are there any results here: ", results)
       return res.json(results);
       // });
     });
