@@ -221,10 +221,10 @@ function updateReleasesTable(releaseData) {
         // SQL Query > Insert Data
         for (var i = 0; i < releaseData['model'].length; i++) {
             const query = {
-                text: 'INSERT INTO articles(title, author, image, url, source ) values($1, $2, $3, $4, $5) ON CONFLICT DO NOTHING;',
-                values: [[orderedArticles["title"][i], orderedArticles["author"][i], orderedArticles["image"][i], orderedArticles["url"][i], orderedArticles["source"][i]]],
+                text: 'INSERT INTO releases(model, image, price, releasedate ) values($1, $2, $3, $4) ON CONFLICT DO NOTHING;',
+                values: [releaseData["model"][i], releaseData["image"][i], releaseData["price"][i], releaseData["releaseDate"][i]],
               }
-            client(query, (err, result) => {
+            var res = client(query, (err, result) => {
                 if (err) throw err;
             });
         }
