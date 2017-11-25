@@ -29,7 +29,7 @@ app.get('/releases', function (req, res) {
     // SQL Query > Select Data
     // const query = client.query('SELECT * FROM releases ORDER BY id ASC;');
     // Stream results back one row at a time
-    var res = await client.query('SELECT * FROM releases ORDER BY id ASC;');
+    client.query('SELECT * FROM releases ORDER BY id ASC;', (err, res) => {
     res.rows.forEach(row=>{
       results.push(row);
     });
@@ -63,9 +63,12 @@ app.post('/release', (req, res, next) => {
     // query.on('row', (row) => {
       // results.push(row);
     // });
+    const query = {
+      text: 'INSERT INTO releases(model, image, price, releasedate ) values($1, $2, $3, $4) ON CONFLICT DO NOTHING;',
+      values:  [data.model, data.image, data.price, data.releaseDate],
+    }
 
-    var res = await client.query('INSERT INTO releases(model, image, price, releasedate ) values($1, $2, $3, $4) ON CONFLICT DO NOTHING;',
-    [data.model, data.image, data.price, data.releaseDate]);
+    client.query(query, (err, res) => {
     res.rows.forEach(row=>{
       results.push(row);
     });
