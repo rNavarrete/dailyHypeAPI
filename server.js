@@ -141,7 +141,7 @@ app.post('/search', (req, res, next) => {
 
       // SQL Query > Select Data
       // const query = client.query('SELECT * FROM articles ORDER BY id DESC;');
-      client.query('SELECT * FROM articles ORDER BY id DESC;', (err, res) => {
+      client.query('SELECT * FROM articles ORDER BY id DESC LIMIT 100;', (err, res) => {
       // Stream results back one row at a time
       res.rows.forEach(row => {
         results.push(row);
