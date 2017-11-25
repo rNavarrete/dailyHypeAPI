@@ -39,7 +39,7 @@ app.get('/releases', function (req, res) {
     // After all data is returned, close connection and return results
     // query.on('end', () => {
       // done();
-      await client.end();
+      client.end();
       return res.json(results);
     });
   });
