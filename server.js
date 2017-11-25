@@ -76,11 +76,11 @@ app.post('/article', (req, res, next) => {
       // SQL Query > Select Data
       const query = client.query('SELECT * FROM items ORDER BY id ASC');
       // Stream results back one row at a time
-
-      client.query('INSERT INTO articles(title, author, image, url, source ) values($1, $2, $3, $4, $5)', (err, res) => {
-      r.rows.forEach(row => {
-        results.push(row);
-      });
+      client.query('INSERT INTO articles(title, author, image, url, source ) values($1, $2, $3, $4, $5)', (err, r) => {
+        r.rows.forEach(row => {
+          results.push(row);
+        });
+      })
       // After all data is returned, close connection and return results
       // query.on('end', () => {
       // done();
