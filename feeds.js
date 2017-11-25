@@ -158,7 +158,7 @@ function setArticlesToCorrectOrder(source1, source2) {
                 text: 'INSERT INTO articles(title, author, image, url, source ) values($1, $2, $3, $4, $5) ON CONFLICT DO NOTHING;',
                 values: [[orderedArticles["title"][i], orderedArticles["author"][i], orderedArticles["image"][i], orderedArticles["url"][i], orderedArticles["source"][i]]],
               }
-            client(query, (err, result) => {
+            client.query(query, (err, result) => {
                 // client.query('INSERT INTO articles(title, author, image, url, source ) values($1, $2, $3, $4, $5) ON CONFLICT DO NOTHING;', [orderedArticles["title"][i], orderedArticles["author"][i], orderedArticles["image"][i], orderedArticles["url"][i], orderedArticles["source"][i]], function (err, result) {
                     if (err) throw err;
                 });
@@ -224,7 +224,7 @@ function updateReleasesTable(releaseData) {
                 text: 'INSERT INTO releases(model, image, price, releasedate ) values($1, $2, $3, $4) ON CONFLICT DO NOTHING;',
                 values: [releaseData["model"][i], releaseData["image"][i], releaseData["price"][i], releaseData["releaseDate"][i]],
               }
-            client(query, (err, res) => {
+            client.query(query, (err, res) => {
                 if (err) throw err;
             });
         }

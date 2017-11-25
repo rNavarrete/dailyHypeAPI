@@ -75,7 +75,7 @@ app.post('/release', (req, res, next) => {
 
     // query.on('end', () => {
       // done();
-      await client.end();
+      client.end();
       return res.status(200).json({ success: true });
     // });
   });
@@ -115,7 +115,7 @@ app.post('/article', (req, res, next) => {
     // After all data is returned, close connection and return results
     // query.on('end', () => {
       // done();
-      await client.end();
+      client.end();
       return res.json(results);
     // });
   });
@@ -147,7 +147,7 @@ app.post('/search', (req, res, next) => {
       // results.push(row);
       // });
       // After all data is returned, close connection and return results
-      await client.end();
+      client.end();
       return res.json(results);
     });
   });
@@ -171,7 +171,7 @@ app.post('/search', (req, res, next) => {
         results.push(row);
       });
       // After all data is returned, close connection and return results
-      await client.end();
+      client.end();
       return res.json(results);
     });
   });
@@ -198,7 +198,7 @@ app.post('/search', (req, res, next) => {
         res.rows.forEach(row=>{
           results.push(row);
         });
-      await client.end();
+      client.end();
       return res.status(200).json({ success: true });
   });
 });
