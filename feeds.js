@@ -154,32 +154,37 @@ function setArticlesToCorrectOrder(source1, source2) {
         // SQL Query > Insert Data
         for (var i = 0; i < orderedArticles['title'].length; i++) {
             console.log(orderedArticles['title'])
-            client.query('INSERT INTO articles(title, author, image, url, source ) values($1, $2, $3, $4, $5) ON CONFLICT DO NOTHING;', [orderedArticles["title"][i], orderedArticles["author"][i], orderedArticles["image"][i], orderedArticles["url"][i], orderedArticles["source"][i]], function (err, result) {
-                if (err) throw err;
-            });
-        }
-    })
-}
+            const query = {
+                text: 'INSERT INTO articles(title, author, image, url, source ) values($1, $2, $3, $4, $5) ON CONFLICT DO NOTHING;',
+                values: [[orderedArticles["title"][i], orderedArticles["author"][i], orderedArticles["image"][i], orderedArticles["url"][i], orderedArticles["source"][i]]],
+              }
+            client(query, (err, result) => {
+                // client.query('INSERT INTO articles(title, author, image, url, source ) values($1, $2, $3, $4, $5) ON CONFLICT DO NOTHING;', [orderedArticles["title"][i], orderedArticles["author"][i], orderedArticles["image"][i], orderedArticles["url"][i], orderedArticles["source"][i]], function (err, result) {
+                    if (err) throw err;
+                });
+            }
+        })
+    }
 
-function scrapeReleaseDates() {
-    var releases = {
-        'releaseDate': [],
-        'model': [],
-        'price': [],
-        'image': [],
-    };
+    function scrapeReleaseDates() {
+        var releases = {
+            'releaseDate': [],
+            'model': [],
+            'price': [],
+            'image': [],
+        };
 
-    jsdom.env({
-        url: "https://sneakernews.com/release-dates",
-        scripts: ["http://code.jquery.com/jquery.js"],
-        done: function (err, window) {
-            var $ = window.$;
-            // extract release date
-            $(".release-date").each(function () {
-                releases['releaseDate'].push($(this).text());
-            });
-            // extract article title
-            $(".post-header > h2 > a > span").each(function () {
+        jsdom.env({
+            url: "https://sneakernews.com/release-dates",
+            scripts: ["http://code.jquery.com/jquery.js"],
+            done: function (err, window) {
+                var $ = window.$;
+                // extract release date
+                $(".release-date").each(function () {
+                    releases['releaseDate'].push($(this).text());
+                });
+                // extract article title
+                $(".post-header > h2 > a > span").each(function () {
                 releases['model'].push($(this).text());
             });
             // extract article price
@@ -215,7 +220,11 @@ function updateReleasesTable(releaseData) {
 
         // SQL Query > Insert Data
         for (var i = 0; i < releaseData['model'].length; i++) {
-            client.query('INSERT INTO releases(model, image, price, releasedate ) values($1, $2, $3, $4) ON CONFLICT DO NOTHING;', [releaseData["model"][i], releaseData["image"][i], releaseData["price"][i], releaseData["releaseDate"][i]], function (err, result) {
+            const query = {
+                text: 'INSERT INTO articles(title, author, image, url, source ) values($1, $2, $3, $4, $5) ON CONFLICT DO NOTHING;',
+                values: [[orderedArticles["title"][i], orderedArticles["author"][i], orderedArticles["image"][i], orderedArticles["url"][i], orderedArticles["source"][i]]],
+              }
+            client(query, (err, result) => {
                 if (err) throw err;
             });
         }

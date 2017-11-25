@@ -27,18 +27,22 @@ app.get('/releases', function (req, res) {
       return res.status(500).json({success: false, data: err});
     }
     // SQL Query > Select Data
-    const query = client.query('SELECT * FROM releases ORDER BY id ASC;');
+    // const query = client.query('SELECT * FROM releases ORDER BY id ASC;');
     // Stream results back one row at a time
-    query.on('row', (row) => {
+    var res = await client.query('SELECT * FROM releases ORDER BY id ASC;');
+    res.rows.forEach(row=>{
       results.push(row);
     });
+    // query.on('row', (row) => {
+      // results.push(row);
+    // });
     // After all data is returned, close connection and return results
-    query.on('end', () => {
-      done();
+    // query.on('end', () => {
+      // done();
+      await client.end();
       return res.json(results);
     });
   });
-});
 
 app.post('/release', (req, res, next) => {
   // Grab data from http request
@@ -54,15 +58,23 @@ app.post('/release', (req, res, next) => {
       return res.status(500).json({success: false, data: err});
     }
     // SQL Query > Insert Data
-  const query = client.query('INSERT INTO releases(model, image, price, releasedate ) values($1, $2, $3, $4) ON CONFLICT DO NOTHING;',
+  //const query = client.query('INSERT INTO releases(model, image, price, releasedate ) values($1, $2, $3, $4) ON CONFLICT DO NOTHING;',
+    //[data.model, data.image, data.price, data.releaseDate]);
+    // query.on('row', (row) => {
+      // results.push(row);
+    // });
+
+    var res = await client.query('INSERT INTO releases(model, image, price, releasedate ) values($1, $2, $3, $4) ON CONFLICT DO NOTHING;',
     [data.model, data.image, data.price, data.releaseDate]);
-    query.on('row', (row) => {
+    res.rows.forEach(row=>{
       results.push(row);
     });
-    query.on('end', () => {
-      done();
+
+    // query.on('end', () => {
+      // done();
+      await client.end();
       return res.status(200).json({ success: true });
-    });
+    // });
   });
 });
 
@@ -81,19 +93,28 @@ app.post('/article', (req, res, next) => {
       return res.status(500).json({success: false, data: err});
     }
     // SQL Query > Insert Data
-    client.query('INSERT INTO articles(title, author, image, url, source ) values($1, $2, $3, $4, $5)',
+    // client.query('INSERT INTO articles(title, author, image, url, source ) values($1, $2, $3, $4, $5)',
+    // [data.title, data.author, data.image, data.url, data.source]);
+
+    var res = await client.query('INSERT INTO articles(title, author, image, url, source ) values($1, $2, $3, $4, $5)',
     [data.title, data.author, data.image, data.url, data.source]);
+    res.rows.forEach(row=>{
+      results.push(row);
+    });
     // SQL Query > Select Data
     const query = client.query('SELECT * FROM items ORDER BY id ASC');
     // Stream results back one row at a time
-    query.on('row', (row) => {
+
+    var r = await client.query('INSERT INTO articles(title, author, image, url, source ) values($1, $2, $3, $4, $5)')
+    r.rows.forEach(row=>{
       results.push(row);
     });
     // After all data is returned, close connection and return results
-    query.on('end', () => {
-      done();
+    // query.on('end', () => {
+      // done();
+      await client.end();
       return res.json(results);
-    });
+    // });
   });
 });
 
@@ -112,68 +133,70 @@ app.post('/search', (req, res, next) => {
       return res.status(500).json({success: false, data: err});
     }
     // SQL Query > Insert Data
-    const query = client.query("SELECT * FROM articles WHERE title ILIKE $1 ORDER BY id DESC;", ['%' + data.query+ '%']);
+    // const query = client.query("SELECT * FROM articles WHERE title ILIKE $1 ORDER BY id DESC;", ['%' + data.query+ '%']);
     // Stream results back one row at a time
-    query.on('row', (row) => {
+    var res = await client.query("SELECT * FROM articles WHERE title ILIKE $1 ORDER BY id DESC;", ['%' + data.query+ '%']);
+    res.rows.forEach(row=>{
       results.push(row);
     });
-    // After all data is returned, close connection and return results
-    query.on('end', () => {
-      done();
+
+    // query.on('row', (row) => {
+      // results.push(row);
+      // });
+      // After all data is returned, close connection and return results
+      await client.end();
       return res.json(results);
     });
   });
-});
 
-app.get('/articles', (req, res, next) => {
-  const results = [];
-  // Get a Postgres client from the connection pool
-  var pool = new pg.Pool(config)
-  pool.connect(function(err, client, done) {
-    // Handle connection errors
-    if(err) {
-      done();
-      console.log(err);
-      return res.status(500).json({success: false, data: err});
-    }
-    // SQL Query > Select Data
-    const query = client.query('SELECT * FROM articles ORDER BY id DESC;');
-    // Stream results back one row at a time
-    query.on('row', (row) => {
-      results.push(row);
-    });
-    // After all data is returned, close connection and return results
-    query.on('end', () => {
-      done();
+  app.get('/articles', (req, res, next) => {
+    const results = [];
+    // Get a Postgres client from the connection pool
+    var pool = new pg.Pool(config)
+    pool.connect(function(err, client, done) {
+      // Handle connection errors
+      if(err) {
+        done();
+        console.log(err);
+        return res.status(500).json({success: false, data: err});
+      }
+      // SQL Query > Select Data
+      // const query = client.query('SELECT * FROM articles ORDER BY id DESC;');
+      var res = await client.query('SELECT * FROM articles ORDER BY id DESC;');
+      // Stream results back one row at a time
+      res.rows.forEach(row=>{
+        results.push(row);
+      });
+      // After all data is returned, close connection and return results
+      await client.end();
       return res.json(results);
     });
   });
-});
 
 
-app.post('/view', (req, res, next) => {
-  // Grab data from http request
-  console.log(req.body)
-  const data = {id: req.body.id, view: req.body.views};
-  // Get a Postgres client from the connection pool
-  var pool = new pg.Pool(config)
-  pool.connect(function(err, client, done) {
-    // Handle connection errors
-    if(err) {
-      done();
-      console.log(err);
-      return res.status(500).json({success: false, data: err});
-    }
-    // SQL Query > Insert Data
-  const query = client.query('UPDATE articles SET viewcount = viewcount + 1 WHERE id = ($1) AND viewcount = ($2)',
-    [data.id, data.view]);
-    query.on('row', (row) => {
-      results.push(row);
-    });
-    query.on('end', () => {
-      done();
+  app.post('/view', (req, res, next) => {
+    // Grab data from http request
+    console.log(req.body)
+    const data = {id: req.body.id, view: req.body.views};
+    // Get a Postgres client from the connection pool
+    var pool = new pg.Pool(config)
+    pool.connect(function(err, client, done) {
+      // Handle connection errors
+      if(err) {
+        done();
+        console.log(err);
+        return res.status(500).json({success: false, data: err});
+      }
+      // SQL Query > Insert Data
+      // const query = client.query('UPDATE articles SET viewcount = viewcount + 1 WHERE id = ($1) AND viewcount = ($2)',
+      var res = await client.query('UPDATE articles SET viewcount = viewcount + 1 WHERE id = ($1) AND viewcount = ($2)',
+        [data.id, data.view]);
+
+        res.rows.forEach(row=>{
+          results.push(row);
+        });
+      await client.end();
       return res.status(200).json({ success: true });
-    });
   });
 });
 
