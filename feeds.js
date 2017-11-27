@@ -77,23 +77,19 @@ function scrapeSneakerNews() {
         done: function (err, window) {
             var $ = window.$;
             // extract article titles
-            // $("#main > div > ul > li > div > h2 > a").each(function () {
-            $(".title-wrapper > a > h2 > span").each(function () {
-                console.log("This should be article titles: ", articleSource2['title'])
+            $(".post-box-content-title > a > h2").each(function () {
+                console.log("This should be article titles hypebeast: ", articleSource2['title'])
                 articleSource2['title'].push( $(this).text());
             });
             // extract article images
-            // $("li > div > a > img").each(function () {
-                $(".col-hb-post-image.teaser > a > img").each(function () {
-                    //    articleSource2['image'].push(encodeURI($(this).attr("src")));
-                    articleSource2['image'].push($(this).attr("src"));
-                    console.log("This should be article images: ", $(this).attr("src"))
-                });
+            $(".post-box-image-container > a > img").each(function () {
+                articleSource2['image'].push($(this).attr("src"));
+                console.log("This should be article images: ", $(this).attr("src"))
+            });
                 // // extract article URL
-                // $("#main > div > ul > li > div > h2 > ").each(function () {
-                    $(".col-hb-post-meta.meta > div.title-wrapper > a").each(function () {
-                        articleSource2['url'].push($(this).attr("href"));
-                        console.log("This should be article URL: ", $(this).attr("href"))
+            $(".post-box-content-container > div.post-box-content-title > a").each(function () {
+                articleSource2['url'].push($(this).attr("href"));
+                console.log("This should be article URL: ", $(this).attr("href"))
             });
             var orderdArticles = {};
             setArticlesToCorrectOrder(articleSource1, articleSource2);
