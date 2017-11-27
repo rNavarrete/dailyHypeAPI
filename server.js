@@ -150,8 +150,8 @@ app.post('/search', (req, res, next) => {
       client.end();
     });
     console.log("Are there any results here: ", results)
-    return res.json(results);
-    });
+  });
+  return res.json(results);
   });
 
 
