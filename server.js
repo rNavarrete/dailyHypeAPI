@@ -147,10 +147,10 @@ app.post('/search', (req, res, next) => {
           results.push(row);
         });
       // After all data is returned, close connection and return results
-        console.log("Are there any results here: ", results)
-        client.end();
-      });
-      return res.json(results);
+      client.end();
+    });
+    console.log("Are there any results here: ", results)
+    return res.json(results);
     });
   });
 
