@@ -30,8 +30,8 @@ app.get('/releases', function (req, res) {
     // SQL Query > Select Data
     // const query = client.query('SELECT * FROM releases ORDER BY id ASC;');
     // Stream results back one row at a time
-    client.query('SELECT * FROM releases ORDER BY id ASC;', (err, res) => {
-      res.rows.forEach(row => {
+    client.query('SELECT * FROM releases ORDER BY id ASC;', (err, r) => {
+      r.rows.forEach(row => {
         results.push(row);
       });
       // query.on('row', (row) => {
@@ -42,7 +42,6 @@ app.get('/releases', function (req, res) {
       // done();
       client.end();
       return res.json(results);
-
     });
   });
   });
@@ -167,13 +166,11 @@ app.post('/search', (req, res, next) => {
         console.log(err);
         return res.status(500).json({success: false, data: err});
       }
-      const query = {
-        text: 'UPDATE articles SET viewcount = viewcount + 1 WHERE id = ($1) AND viewcount = ($2)',
-        values:  [data.id, data.view],
-      }
+      var query   =   'UPDATE articles SET viewcount = viewcount + 1 WHERE id = ($1) AND viewcount = ($2)'
+      var values = [data.id, data.view]
       // SQL Query > Insert Data
       // const query = client.query('UPDATE articles SET viewcount = viewcount + 1 WHERE id = ($1) AND viewcount = ($2)',
-      client.query(query, (err, res) => {
+      client.query(query, values, (err, res) => {
         res.rows.forEach(row=>{
           results.push(row);
         });
