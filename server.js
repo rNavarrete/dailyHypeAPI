@@ -143,14 +143,14 @@ app.post('/search', (req, res, next) => {
       // const query = client.query('SELECT * FROM articles ORDER BY id DESC;');
       client.query('SELECT * FROM articles ORDER BY id DESC LIMIT 50;', (err, res) => {
       // Stream results back one row at a time
-      res.rows.forEach(row => {
-        results.push(row);
-      });
+        res.rows.forEach(row => {
+          results.push(row);
+        });
       // After all data is returned, close connection and return results
-      console.log("Are there any results here: ", results)
-      client.end();
-      return res.json(results);
+        console.log("Are there any results here: ", results)
+        client.end();
       });
+      return res.json(results);
     });
   });
 
