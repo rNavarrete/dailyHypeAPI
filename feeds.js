@@ -141,7 +141,7 @@ function setArticlesToCorrectOrder(source1, source2) {
         orderedArticles['url'].push(source2['url'][i]);
     });
     orderedArticles['url'] = orderedArticles['url'].filter(Boolean);
-    console.log(orderedArticles)
+    console.log("That's my bro: "+ orderedArticles)
     // insert the articles into the database:
     var pool = new pg.Pool(config)
     pool.connect(function(err, client, done) {
