@@ -145,8 +145,8 @@ app.post('/search', (req, res, next) => {
           results.push(row);
         });
       // After all data is returned, close connection and return results
-      client.end();
       return res.json(results);
+      client.end();
       });
       process.exit(-1)
     });
