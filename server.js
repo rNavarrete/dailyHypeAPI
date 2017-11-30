@@ -137,7 +137,6 @@ app.post('/search', (req, res, next) => {
         console.log(err);
         return res.status(500).json({success: false, data: err});
       }
-
       // SQL Query > Select Data
       // const query = client.query('SELECT * FROM articles ORDER BY id DESC;');
       client.query('SELECT * FROM articles ORDER BY id DESC LIMIT 50;', (err, r) => {
@@ -146,9 +145,10 @@ app.post('/search', (req, res, next) => {
           results.push(row);
         });
       // After all data is returned, close connection and return results
-        return res.json(results);
-        client.end();
+      client.end();
+      return res.json(results);
       });
+      process.exit(-1)
     });
   });
 
