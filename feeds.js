@@ -38,27 +38,27 @@ function scrapeSneakerNews() {
                 var cleanedTitle = ""
                 cleanedTitle = $(this).text().trim();
                 articleSource1['title'].push(cleanedTitle);
-                console.log("This should be a title Sneakernews: ", cleanedTitle)
+                //console.log("This should be a title Sneakernews: ", cleanedTitle)
             });
             // extract article images
             $(".image-box > a > img").each(function () {
                 articleSource1['image'].push(encodeURI($(this).attr("src")));
-                console.log("This should be a image URL: ", encodeURI($(this).attr("src")))
+                //console.log("This should be a image URL: ", encodeURI($(this).attr("src")))
             });
             // extract article author
             $(".posted-by > a").each(function () {
                 articleSource1['author'].push($(this).text())
-                console.log("This should be a author: ", $(this).text())
+                //console.log("This should be a author: ", $(this).text())
             });
             // extract article date
             $(".date-and-name > p > span").each(function () {
                 articleSource1['date'].push($(this).first().text().replace(/(?=BY).*/, ""));
-                console.log("This should be a date: ", $(this).first().text().replace(/(?=BY).*/, ""))
+                //console.log("This should be a date: ", $(this).first().text().replace(/(?=BY).*/, ""))
             });
             // extract article URL
             $(".post-content > h4 > a").each(function () {
                 articleSource1['url'].push($(this).attr("href"));
-                console.log("This should be a URL: ", $(this).attr("href"))
+                //console.log("This should be a URL: ", $(this).attr("href"))
             });
         }
     })
@@ -77,18 +77,18 @@ function scrapeSneakerNews() {
             var $ = window.$;
             // extract article titles
             $(".entry-title").each(function () {
-                console.log("This should be article titles nicekicks: ", articleSource2['title'])
+                //console.log("This should be article titles nicekicks: ", articleSource2['title'])
                 articleSource2['title'].push( $(this).text());
             });
             // extract article images
             $(".attachment-medium.size-medium.wp-post-image").each(function () {
                 articleSource2['image'].push($(this).attr("src"));
-                console.log("This should be article images hypebeast: ", $(this).attr("src"));
+                //console.log("This should be article images hypebeast: ", $(this).attr("src"));
             });
                 // // extract article URL
             $("header > h2 > a").each(function () {
                 articleSource2['url'].push($(this).attr("href"));
-                console.log("This should be article URL: ", $(this).attr("href"))
+                //console.log("This should be article URL: ", $(this).attr("href"))
             });
             var orderdArticles = {};
             setArticlesToCorrectOrder(articleSource1, articleSource2);
@@ -136,7 +136,7 @@ function setArticlesToCorrectOrder(source1, source2) {
         orderedArticles['url'].push(source2['url'][i]);
     });
     orderedArticles['url'] = orderedArticles['url'].filter(Boolean);
-    console.log("That's my bro: "+ orderedArticles)
+    //console.log("That's my bro: "+ orderedArticles)
     // insert the articles into the database:
     var pool = new pg.Pool(config)
     pool.connect(function(err, client, done) {
@@ -148,7 +148,7 @@ function setArticlesToCorrectOrder(source1, source2) {
         }
         // SQL Query > Insert Data
         for (var i = 0; i < orderedArticles['title'].length; i++) {
-            console.log(orderedArticles['title'])
+            //console.log(orderedArticles['title'])
             const query  = 'INSERT INTO articles(title, author, image, url, source ) values($1, $2, $3, $4, $5) ON CONFLICT DO NOTHING;'
             const values =  [orderedArticles["title"][i], orderedArticles["author"][i], orderedArticles["image"][i], orderedArticles["url"][i], orderedArticles["source"][i]]
             client.query(query, values, (err, result) => {
@@ -175,18 +175,22 @@ function setArticlesToCorrectOrder(source1, source2) {
                 // extract release date
                 $(".release-date").each(function () {
                     releases['releaseDate'].push($(this).text());
+                    console.log("Release date for shoe: ", $(this).text())
                 });
                 // extract article title
-                $(".post-header > h2 > a > span").each(function () {
-                releases['model'].push($(this).text());
+                $(".content-box > h2 > a").each(function () {
+                    releases['model'].push($(this).text());
+                    console.log("Shoe model: ", $(this).text())
             });
             // extract article price
-            $(".post-header > div > p > span").each(function () {
+            $(".release-price").each(function () {
                 releases['price'].push($(this).text());
+                console.log("Shoe price: ", $(this).text())
             });
             // extract shoe image
-            $(".release-img > a > img").each(function () {
+            $(".image-box > a > img").each(function () {
                 releases['image'].push($(this).attr("src"));
+                console.log("shoe image link: ", $(this).attr("src"))
             });
             updateReleasesTable(releases)
             window.setTimeout(function () {
