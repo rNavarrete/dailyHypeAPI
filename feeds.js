@@ -27,25 +27,26 @@ function scrapeSneakerNews() {
     'date': [],
     'url': [],
     };
+    var year = new Date().getFullYear();
     jsdom.env({
-        url: "https://sneakernews.com/",
+        url: "https://sneakernews.com/"+ year,
         scripts: ["http://code.jquery.com/jquery.js"],
         done: function (err, window) {
             var $ = window.$;
             // extract article titles
-            $(".header-title").each(function () {
+            $(".post-content > h4 > a").each(function () {
                 var cleanedTitle = ""
                 cleanedTitle = $(this).text().trim();
                 articleSource1['title'].push(cleanedTitle);
                 console.log("This should be a title Sneakernews: ", cleanedTitle)
             });
             // extract article images
-            $(".post-data > p > a > img").each(function () {
+            $(".image-box > a > img").each(function () {
                 articleSource1['image'].push(encodeURI($(this).attr("src")));
                 console.log("This should be a image URL: ", encodeURI($(this).attr("src")))
             });
             // extract article author
-            $(".date-and-name > p > span > a").each(function () {
+            $(".posted-by > a").each(function () {
                 articleSource1['author'].push($(this).text())
                 console.log("This should be a author: ", $(this).text())
             });
@@ -55,7 +56,7 @@ function scrapeSneakerNews() {
                 console.log("This should be a date: ", $(this).first().text().replace(/(?=BY).*/, ""))
             });
             // extract article URL
-            $(".post-header > h2 > a").each(function () {
+            $(".post-content > h4 > a").each(function () {
                 articleSource1['url'].push($(this).attr("href"));
                 console.log("This should be a URL: ", $(this).attr("href"))
             });
