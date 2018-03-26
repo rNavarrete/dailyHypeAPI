@@ -174,8 +174,8 @@ function setArticlesToCorrectOrder(source1, source2) {
                 var $ = window.$;
                 // extract release date
                 $(".release-date").each(function () {
-                    releases['releaseDate'].push($(this).text());
-                    console.log("Release date for shoe: ", $(this).text())
+                    releases['releaseDate'].push($(this).text().trim());
+                    console.log("Release date for shoe: ", $(this).text().trim())
                 });
                 // extract article title
                 $(".content-box > h2 > a").each(function () {
