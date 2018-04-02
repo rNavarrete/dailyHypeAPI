@@ -174,8 +174,14 @@ function setArticlesToCorrectOrder(source1, source2) {
                 var $ = window.$;
                 // extract release date
                 $(".release-date").each(function () {
-                    releases['releaseDate'].push($(this).text().trim());
-                    console.log("Release date for shoe: ", $(this).text().trim())
+                    // grab the release date of the article
+                    var releaseDate = $(this).text().trim().replace(/[^\d.-]/g, '').replace(/0/g, '').substring(0, 4)
+                    // grab the current date
+                    var date = new Date();
+                    date = (date.getMonth() + 1) + "." + date.getDate();
+                if (parseFloat(releaseDate) >= parseFloat(date) ) {
+                    releases['releaseDate'].push($(this).text().trim().replace(/[^\d.-]/g, '').substring(0,5));
+                }
                 });
                 // extract article title
                 $(".content-box > h2 > a").each(function () {
