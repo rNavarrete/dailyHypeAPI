@@ -173,31 +173,36 @@ function setArticlesToCorrectOrder(source1, source2) {
             done: function (err, window) {
                 var $ = window.$;
                 // extract release date
-                $(".release-date").each(function () {
+                $(".releases-box").each(function () {
                     // grab the release date of the article
-                    var releaseDate = $(this).text().trim().replace(/[^\d.-]/g, '').replace(/0/g, '').substring(0, 4)
+                    var releaseDate = $(this).find("div.release-date-and-rating > span").text().trim().replace(/[^\d.-]/g, '').replace(/0/g, '').substring(0, 4)
+                    console.log("This is the release date: ", releaseDate)
                     // grab the current date
                     var date = new Date();
                     date = (date.getMonth() + 1) + "." + date.getDate();
+                    console.log("This is the current date: ", date)
                 if (parseFloat(releaseDate) >= parseFloat(date) ) {
-                    releases['releaseDate'].push($(this).text().trim().replace(/[^\d.-]/g, '').substring(0,5));
+                    console.log("From within the conditional: ", $(this).text().trim().replace(/[^\d.-]/g, '').replace(/0/g, '').substring(0, 4))
+                    releases['releaseDate'].push($(this).text().trim().replace(/[^\d.-]/g, '').substring(0, 5));
+
+                    //$(".content-box > h2 > a").each(function () {
+                        releases['model'].push($(this).find("h2 > a").text());
+                         console.log("Shoe model: ", $(this).find(" h2 > a").text())
+                    //});
+                    // extract article price
+                    //$(".release-price").each(function () {
+                        releases['price'].push($(this).find(".release-price").text());
+                         console.log("Shoe price: ", $(this).find(".release-price").text())
+                    //});
+                    // extract shoe image
+                    //$(".image-box > a > img").each(function () {
+                        releases['image'].push($(this).find(".image-box > a > img").attr("src"));
+                         console.log("shoe image link: ", $(this).find(".image-box > a > img").attr("src"))
+                    //});
                 }
-                });
+             });
                 // extract article title
-                $(".content-box > h2 > a").each(function () {
-                    releases['model'].push($(this).text());
-                    console.log("Shoe model: ", $(this).text())
-            });
-            // extract article price
-            $(".release-price").each(function () {
-                releases['price'].push($(this).text());
-                console.log("Shoe price: ", $(this).text())
-            });
-            // extract shoe image
-            $(".image-box > a > img").each(function () {
-                releases['image'].push($(this).attr("src"));
-                console.log("shoe image link: ", $(this).attr("src"))
-            });
+
             updateReleasesTable(releases)
             window.setTimeout(function () {
                 console.log("Exiting now.")
