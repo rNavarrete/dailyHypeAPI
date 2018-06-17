@@ -176,12 +176,13 @@ function setArticlesToCorrectOrder(source1, source2) {
                 $(".releases-box").each(function () {
                     // grab the release date of the article
                     var releaseDate = $(this).find("div.release-date-and-rating > span").text().trim().replace(/[^\d.-]/g, '').replace(/0/g, '').substring(0, 4)
-                    console.log("This is the release date: ", releaseDate)
+                    // console.log("This is the release date: ", releaseDate)
                     // grab the current date
                     var date = new Date();
                     date = (date.getMonth() + 1) + "." + date.getDate();
                     console.log("This is the current date: ", date)
-                if (parseFloat(releaseDate) >= parseFloat(date) ) {
+                    if (parseFloat(releaseDate) >= parseFloat(date) ) {
+                    console.log("these are the releases: ", releases)
                     console.log("From within the conditional: ", $(this).text().trim().replace(/[^\d.-]/g, '').replace(/0/g, '').substring(0, 4))
                     releases['releaseDate'].push($(this).text().trim().replace(/[^\d.-]/g, '').substring(0, 5));
 
