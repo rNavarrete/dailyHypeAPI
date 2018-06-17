@@ -28,26 +28,24 @@ function scrapeSneakerNews() {
     'url': [],
     };
     jsdom.env({
-        url: "https://solecollector.com/news/",
+        url: "https://hypebeast.com/footwear/",
         scripts: ["http://code.jquery.com/jquery.js"],
         done: function (err, window) {
             var $ = window.$;
             // extract article titles
-            $("feed-item-grid > div > h2 > a").each(function () {
-                console.log("This should be article titles nicekicks: ", articleSource1['title'])
-                articleSource1['title'].push( $(this).text());
+            $(".title").each(function () {
+                console.log("This should be article titles nicekicks: ", articleSource2['title'])
+                articleSource2['title'].push( $(this).text());
             });
             // extract article images
-            $("feed-item-grid > div > div.feed-item__image-container.embed-responsive.embed-responsive-16by9 > a > img").each(function () {
-                articleSource1['image'].push($(this).attr("src"));
-                console.log("This should be article images hypebeast: ", $(this).attr("currentSrc"));
+            $(".img-fluid.lazy-load.loaded").each(function () {
+                articleSource2['image'].push($(this).attr("style"));
+                console.log("This should be article images hypebeast: ", $(this).attr("src"));
             });
                 // // extract article URL
-            $("feed-item-grid > div > h2 > a").each(function () {
-                articleUrl = "https://solecollector.com/news/" + $(this).attr("href")
-                console.log("This is the article url: ", articleUrl)
-                articleSource1['url'].push(articleUrl);
-                //console.log("This should be article URL: ", $(this).attr("href"))
+            $(".title").each(function () {
+                console.log("This should be article URL: ", $(this).attr("href"))
+                articleSource2['url'].push($(this).attr("href"));
             });
 
         }
