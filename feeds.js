@@ -38,27 +38,27 @@ function scrapeSneakerNews() {
                 var cleanedTitle = ""
                 cleanedTitle = $(this).text().trim();
                 articleSource1['title'].push(cleanedTitle);
-                //console.log("This should be a title Sneakernews: ", cleanedTitle)
+                console.log("This should be a title Sneakernews: ", cleanedTitle)
             });
             // extract article images
             $(".image-box > a > img").each(function () {
                 articleSource1['image'].push(encodeURI($(this).attr("src")));
-                //console.log("This should be a image URL: ", encodeURI($(this).attr("src")))
+                console.log("This should be a image URL: ", encodeURI($(this).attr("src")))
             });
             // extract article author
             $(".posted-by > a").each(function () {
                 articleSource1['author'].push($(this).text())
-                //console.log("This should be a author: ", $(this).text())
+                console.log("This should be a author: ", $(this).text())
             });
             // extract article date
             $(".date-and-name > p > span").each(function () {
                 articleSource1['date'].push($(this).first().text().replace(/(?=BY).*/, ""));
-                //console.log("This should be a date: ", $(this).first().text().replace(/(?=BY).*/, ""))
+                console.log("This should be a date: ", $(this).first().text().replace(/(?=BY).*/, ""))
             });
             // extract article URL
             $(".post-content > h4 > a").each(function () {
                 articleSource1['url'].push($(this).attr("href"));
-                //console.log("This should be a URL: ", $(this).attr("href"))
+                console.log("This should be a URL: ", $(this).attr("href"))
             });
         }
     })
@@ -176,29 +176,28 @@ function setArticlesToCorrectOrder(source1, source2) {
                 $(".releases-box").each(function () {
                     // grab the release date of the article
                     var releaseDate = $(this).find("div.release-date-and-rating > span").text().trim().replace(/[^\d.-]/g, '').replace(/0/g, '').substring(0, 4)
-                    // console.log("This is the release date: ", releaseDate)
                     // grab the current date
                     var date = new Date();
                     date = (date.getMonth() + 1) + "." + date.getDate();
-                    console.log("This is the current date: ", date)
+                    //console.log("This is the current date: ", date)
                     if (parseFloat(releaseDate) >= parseFloat(date) ) {
-                    console.log("these are the releases: ", releases)
-                    console.log("From within the conditional: ", $(this).text().trim().replace(/[^\d.-]/g, '').replace(/0/g, '').substring(0, 4))
+                    // console.log("these are the releases: ", releases)
+                    // console.log("From within the conditional: ", $(this).text().trim().replace(/[^\d.-]/g, '').replace(/0/g, '').substring(0, 4))
                     releases['releaseDate'].push($(this).text().trim().replace(/[^\d.-]/g, '').substring(0, 5));
 
                     //$(".content-box > h2 > a").each(function () {
                         releases['model'].push($(this).find("h2 > a").text());
-                         console.log("Shoe model: ", $(this).find(" h2 > a").text())
+                        //  console.log("Shoe model: ", $(this).find(" h2 > a").text())
                     //});
                     // extract article price
                     //$(".release-price").each(function () {
                         releases['price'].push($(this).find(".release-price").text());
-                         console.log("Shoe price: ", $(this).find(".release-price").text())
+                        //  console.log("Shoe price: ", $(this).find(".release-price").text())
                     //});
                     // extract shoe image
                     //$(".image-box > a > img").each(function () {
                         releases['image'].push($(this).find(".image-box > a > img").attr("src"));
-                         console.log("shoe image link: ", $(this).find(".image-box > a > img").attr("src"))
+                        //  console.log("shoe image link: ", $(this).find(".image-box > a > img").attr("src"))
                     //});
                 }
              });
