@@ -28,24 +28,24 @@ function scrapeSneakerNews() {
     'url': [],
     };
     jsdom.env({
-        url: "https://nicekicks.com/2018/",
+        url: "https://hypebeast.com/footwear/",
         scripts: ["http://code.jquery.com/jquery.js"],
         done: function (err, window) {
             var $ = window.$;
             // extract article titles
-            $(".entry-title").each(function () {
+            $(".title").each(function () {
                 console.log("This should be article titles nicekicks: ", articleSource2['title'])
                 articleSource2['title'].push( $(this).text());
             });
             // extract article images
-            $(".attachment-medium.size-medium.wp-post-image").each(function () {
-                articleSource2['image'].push($(this).attr("src"));
+            $(".img-fluid.lazy-load.loaded").each(function () {
+                articleSource2['image'].push($(this).attr("style"));
                 console.log("This should be article images hypebeast: ", $(this).attr("src"));
             });
                 // // extract article URL
-            $("header > h2 > a").each(function () {
+            $(".title").each(function () {
+                console.log("This should be article URL: ", $(this).attr("href"))
                 articleSource2['url'].push($(this).attr("href"));
-                //console.log("This should be article URL: ", $(this).attr("href"))
             });
 
         }
