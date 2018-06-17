@@ -93,7 +93,7 @@ function scrapeSneakerNews() {
             });
             // extract article images
             $(".post-box-image-container.fixed-ratio-3-2 > a > img").each(function () {
-                articleSource2['image'].push($(this).attr("data-src"));
+                articleSource2['image'].push(encodeURI($(this).attr("data-src")));
                 // console.log("This should be article images hypebeast: ", $(this).attr("data-src"));
             });
                 // // extract article URL
