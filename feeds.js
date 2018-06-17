@@ -20,7 +20,7 @@ module.exports.releases = function () {
 }
 
 function scrapeSneakerNews() {
-    var articleSource2 = {
+    var articleSource1 = {
     'title': [],
     'author': [],
     'image': [],
@@ -34,26 +34,26 @@ function scrapeSneakerNews() {
             var $ = window.$;
             // extract article titles
             $("feed-item-grid > div > h2 > a").each(function () {
-                console.log("This should be article titles nicekicks: ", articleSource2['title'])
-                articleSource2['title'].push( $(this).text());
+                console.log("This should be article titles nicekicks: ", articleSource1['title'])
+                articleSource1['title'].push( $(this).text());
             });
             // extract article images
             $("feed-item-grid > div > div.feed-item__image-container.embed-responsive.embed-responsive-16by9 > a > img").each(function () {
-                articleSource2['image'].push($(this).attr("src"));
+                articleSource1['image'].push($(this).attr("src"));
                 console.log("This should be article images hypebeast: ", $(this).attr("currentSrc"));
             });
                 // // extract article URL
             $("feed-item-grid > div > h2 > a").each(function () {
                 articleUrl = "https://solecollector.com/news/" + $(this).attr("href")
                 console.log("This is the article url: ", articleUrl)
-                articleSource2['url'].push(articleUrl);
+                articleSource1['url'].push(articleUrl);
                 //console.log("This should be article URL: ", $(this).attr("href"))
             });
 
         }
     })
 
-    var articleSource1 = {
+    var articleSource2 = {
     'title': [],
     'author': [],
     'image': [],
@@ -62,35 +62,35 @@ function scrapeSneakerNews() {
     };
     var year = new Date().getFullYear();
     jsdom.env({
-        url: "https://sneakernews.com/"+ year,
+        url: "https://nicekicks.com/"+ year,
         scripts: ["http://code.jquery.com/jquery.js"],
         done: function (err, window) {
             var $ = window.$;
             // extract article titles
-            $(".post-content > h4 > a").each(function () {
+            $(".entry-title").each(function () {
                 var cleanedTitle = ""
                 cleanedTitle = $(this).text().trim();
-                articleSource1['title'].push(cleanedTitle);
+                articleSource2['title'].push(cleanedTitle);
                 console.log("This should be a title Sneaker news: ", cleanedTitle)
             });
             // extract article images
-            $(".image-box > a > img").each(function () {
-                articleSource1['image'].push(encodeURI($(this).attr("src")));
+            $(".post-thumbnail").each(function () {
+                articleSource2['image'].push(encodeURI($(this).attr("src")));
                 console.log("This should be a image URL: ", encodeURI($(this).attr("src")))
             });
             // extract article author
             $(".posted-by > a").each(function () {
-                articleSource1['author'].push($(this).text())
-                console.log("This should be a author: ", $(this).text())
+                articleSource2['author'].push("N/A")
+                //console.log("This should be a author: ", $(this).text())
             });
             // extract article date
-            $(".post-content > div > span:nth-child(2)").each(function () {
-                articleSource1['date'].push($(this).first().text().replace(/(?=BY).*/, ""));
+            $(".meta-date").each(function () {
+                articleSource2['date'].push($(this).first().text().replace(/(?=BY).*/, ""));
                 console.log("This should be a date: ", $(this).first().text().replace(/(?=BY).*/, ""))
             });
             // extract article URL
-            $(".post-content > h4 > a").each(function () {
-                articleSource1['url'].push($(this).attr("href"));
+            $(".entry-title").each(function () {
+                articleSource2['url'].push($(this).attr("href"));
                 console.log("This should be a URL: ", $(this).attr("href"))
             });
             var orderdArticles = {};
