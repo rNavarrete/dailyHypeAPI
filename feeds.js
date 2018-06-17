@@ -20,8 +20,6 @@ module.exports.releases = function () {
 }
 
 function scrapeSneakerNews() {
-
-
     var articleSource2 = {
     'title': [],
     'author': [],
@@ -95,6 +93,7 @@ function scrapeSneakerNews() {
             });
             var orderdArticles = {};
             console.log("this is what is in articleSource2 :", articleSource2)
+            console.log("this is what is in articleSource1 :", articleSource1)
             setArticlesToCorrectOrder(articleSource1, articleSource2);
             window.setTimeout(function () {
                 console.log("Exiting now.")
