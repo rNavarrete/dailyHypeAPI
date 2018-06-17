@@ -67,16 +67,16 @@ function scrapeSneakerNews() {
                 // console.log("This should be a date: ", $(this).first().text().replace(/(?=BY).*/, ""))
             });
                 // // extract article URL
-            $(".title").each(function () {
+            $(".post-content > h4 > a").each(function () {
                 articleSource1['url'].push($(this).attr("href"));
-                // console.log("This should be a URL: ", $(this).attr("href"))
+                console.log("This should be the sneakernews title URL: ", $(this).attr("href"))
             });
-            setArticlesToCorrectOrder(articleSource1, articleSource2);
-            var orderdArticles = {};
-            window.setTimeout(function () {
-                console.log("Exiting now.")
-                process.exit()
-            }, 20000);
+            // setArticlesToCorrectOrder(articleSource1, articleSource2);
+            // var orderdArticles = {};
+            // window.setTimeout(function () {
+            //     console.log("Exiting now.")
+            //     process.exit()
+            // }, 20000);
         }
     })
 
@@ -99,10 +99,10 @@ function scrapeSneakerNews() {
                 // // extract article URL
             $(".title").each(function () {
                 articleSource2['url'].push($(this).attr("href"));
-                // console.log("This should be article URL hypebeast: ", $(this).attr("href"))
+                console.log("This should be article URL hypebeast: ", $(this).attr("href"))
             });
-            setArticlesToCorrectOrder(articleSource1, articleSource2);
             var orderdArticles = {};
+            setArticlesToCorrectOrder(articleSource2, articleSource1);
             window.setTimeout(function () {
                 console.log("Exiting now.")
                 process.exit()
