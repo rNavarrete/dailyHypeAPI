@@ -19,80 +19,90 @@ module.exports.releases = function () {
     scrapeReleaseDates();
 }
 
-function scrapeSneakerNews() {
-    var articleSource1 = {
+var articleSource2 = {
     'title': [],
     'author': [],
     'image': [],
     'date': [],
     'url': [],
-    };
-    jsdom.env({
-        url: "https://hypebeast.com/footwear/",
-        scripts: ["http://code.jquery.com/jquery.js"],
-        done: function (err, window) {
-            var $ = window.$;
-            // extract article titles
-            $(".title").each(function () {
-                articleSource1['title'].push( $(this).text());
-                console.log("This should be article titles hypebeast: ", $(this).text())
-            });
-            // extract article images
-            $(".post-box-image-container.fixed-ratio-3-2 > a > img").each(function () {
-                articleSource1['image'].push($(this).attr("data-src"));
-                console.log("This should be article images hypebeast: ", $(this).attr("data-src"));
-            });
-                // // extract article URL
-            $(".title").each(function () {
-                articleSource1['url'].push($(this).attr("href"));
-                console.log("This should be article URL: ", $(this).attr("href"))
-            });
-        }
-    })
+};
 
-    var articleSource2 = {
+var articleSource1 = {
     'title': [],
     'author': [],
     'image': [],
     'date': [],
     'url': [],
-    };
+};
+
+
+function scrapeSneakerNews() {
+
     var year = new Date().getFullYear();
     jsdom.env({
-        url: "https://sneakernews.com/"+ year,
+        url: "https://sneakernews.com/2018",
         scripts: ["http://code.jquery.com/jquery.js"],
         done: function (err, window) {
             var $ = window.$;
             // extract article titles
-            $(".sneaker-post-section > div > div > div > div > div > div.post-content > h4 > a").each(function () {
+            $(".post-content > h4 > a").each(function () {
                 var cleanedTitle = ""
                 cleanedTitle = $(this).text().trim();
-                articleSource2['title'].push(cleanedTitle);
-                // console.log("This should be a title Sneaker news: ", cleanedTitle)
+                articleSource1['title'].push(cleanedTitle);
+                // console.log("This should be a title Sneakernews: ", cleanedTitle)
             });
             // extract article images
             $(".image-box > a > img").each(function () {
-                articleSource2['image'].push(encodeURI($(this).attr("src")));
+                articleSource1['image'].push(encodeURI($(this).attr("src")));
                 // console.log("This should be a image URL: ", encodeURI($(this).attr("src")))
             });
             // extract article author
             $(".posted-by > a").each(function () {
-                articleSource2['author'].push("N/A")
+                articleSource1['author'].push($(this).text())
+                // console.log("This should be a author: ", $(this).text())
             });
             // extract article date
-            $(".post-content > div > span:nth-child(2)").each(function () {
-                articleSource2['date'].push($(this).first().text().replace(/(?=BY).*/, ""));
+            $(".date-and-name > p > span").each(function () {
+                articleSource1['date'].push($(this).first().text().replace(/(?=BY).*/, ""));
                 // console.log("This should be a date: ", $(this).first().text().replace(/(?=BY).*/, ""))
             });
-            // extract article URL
-            $(".sneaker-post-section > div > div > div > div > div > div.post-content > h4 > a").each(function () {
-                articleSource2['url'].push($(this).attr("href"));
+                // // extract article URL
+            $(".title").each(function () {
+                articleSource1['url'].push($(this).attr("href"));
                 // console.log("This should be a URL: ", $(this).attr("href"))
             });
-            var orderdArticles = {};
-            // console.log("this is what is in articleSource2 :", articleSource2)
-            console.log("this is what is in articleSource1 :", articleSource1)
             setArticlesToCorrectOrder(articleSource1, articleSource2);
+            var orderdArticles = {};
+            window.setTimeout(function () {
+                console.log("Exiting now.")
+                process.exit()
+            }, 20000);
+        }
+    })
+
+
+    jsdom.env({
+        url: "https://hypebeast.com/footwear",
+        scripts: ["http://code.jquery.com/jquery.js"],
+        done: function (err, window) {
+            var $ = window.$;
+            // extract article titles
+            $(".title").each(function () {
+                articleSource2['title'].push( $(this).text());
+                // console.log("This should be article titles hypebeast: ", $(this).text())
+            });
+            // extract article images
+            $(".post-box-image-container.fixed-ratio-3-2 > a > img").each(function () {
+                articleSource2['image'].push($(this).attr("data-src"));
+                // console.log("This should be article images hypebeast: ", $(this).attr("data-src"));
+            });
+                // // extract article URL
+            $(".title").each(function () {
+                articleSource2['url'].push($(this).attr("href"));
+                // console.log("This should be article URL hypebeast: ", $(this).attr("href"))
+            });
+            setArticlesToCorrectOrder(articleSource1, articleSource2);
+            var orderdArticles = {};
             window.setTimeout(function () {
                 console.log("Exiting now.")
                 process.exit()
@@ -111,6 +121,8 @@ function setArticlesToCorrectOrder(source1, source2) {
         'url': [],
         'source': []
     };
+    console.log("source1: ", source1)
+    console.log("source2: ", source2)
     source2['title'].map(function (e, i) {
         orderedArticles['title'].push(source1['title'][i]);
         orderedArticles['title'].push(source2['title'][i]);
@@ -149,8 +161,9 @@ function setArticlesToCorrectOrder(source1, source2) {
         }
         // SQL Query > Insert Data
         for (var i = 0; i < orderedArticles['title'].length; i++) {
-            //console.log(orderedArticles['title'])
+            // console.log(orderedArticles['title'])
             const query  = 'INSERT INTO articles(title, author, image, url, source ) values($1, $2, $3, $4, $5) ON CONFLICT DO NOTHING;'
+            // console.log(query)
             const values =  [orderedArticles["title"][i], orderedArticles["author"][i], orderedArticles["image"][i], orderedArticles["url"][i], orderedArticles["source"][i]]
             client.query(query, values, (err, result) => {
                 // client.query('INSERT INTO articles(title, author, image, url, source ) values($1, $2, $3, $4, $5) ON CONFLICT DO NOTHING;', [orderedArticles["title"][i], orderedArticles["author"][i], orderedArticles["image"][i], orderedArticles["url"][i], orderedArticles["source"][i]], function (err, result) {
@@ -177,12 +190,12 @@ function setArticlesToCorrectOrder(source1, source2) {
                 $(".releases-box").each(function () {
                     // grab the release date of the article
                     var releaseDate = $(this).find("div.release-date-and-rating > span").text().trim().replace(/[^\d.-]/g, '').replace(/0/g, '').substring(0, 4)
+                    // console.log("This is the release date: ", releaseDate)
                     // grab the current date
                     var date = new Date();
                     date = (date.getMonth() + 1) + "." + date.getDate();
-                    //console.log("This is the current date: ", date)
-                    if (parseFloat(releaseDate) >= parseFloat(date) ) {
-                    // console.log("these are the releases: ", releases)
+                    // console.log("This is the current date: ", date)
+                if (parseFloat(releaseDate) >= parseFloat(date) ) {
                     // console.log("From within the conditional: ", $(this).text().trim().replace(/[^\d.-]/g, '').replace(/0/g, '').substring(0, 4))
                     releases['releaseDate'].push($(this).text().trim().replace(/[^\d.-]/g, '').substring(0, 5));
 
