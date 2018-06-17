@@ -35,17 +35,17 @@ function scrapeSneakerNews() {
             // extract article titles
             $(".title").each(function () {
                 console.log("This should be article titles nicekicks: ", articleSource2['title'])
-                articleSource2['title'].push( $(this).text());
+                articleSource1['title'].push( $(this).text());
             });
             // extract article images
             $(".img-fluid.lazy-load.loaded").each(function () {
-                articleSource2['image'].push($(this).attr("style"));
+                articleSource1['image'].push($(this).attr("style"));
                 console.log("This should be article images hypebeast: ", $(this).attr("src"));
             });
                 // // extract article URL
             $(".title").each(function () {
                 console.log("This should be article URL: ", $(this).attr("href"))
-                articleSource2['url'].push($(this).attr("href"));
+                articleSource1['url'].push($(this).attr("href"));
             });
 
         }
