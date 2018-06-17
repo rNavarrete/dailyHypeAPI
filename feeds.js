@@ -65,7 +65,7 @@ function scrapeSneakerNews() {
         done: function (err, window) {
             var $ = window.$;
             // extract article titles
-            $(".post-content").each(function () {
+            $(".sneaker-post-section > div > div > div > div > div > div.post-content > h4 > a").each(function () {
                 var cleanedTitle = ""
                 cleanedTitle = $(this).text().trim();
                 articleSource2['title'].push(cleanedTitle);
@@ -81,12 +81,12 @@ function scrapeSneakerNews() {
                 articleSource2['author'].push("N/A")
             });
             // extract article date
-            $(".post-content > div > span").each(function () {
+            $(".post-content > div > span:nth-child(2)").each(function () {
                 articleSource2['date'].push($(this).first().text().replace(/(?=BY).*/, ""));
                 console.log("This should be a date: ", $(this).first().text().replace(/(?=BY).*/, ""))
             });
             // extract article URL
-            $(".post-content").each(function () {
+            $(".sneaker-post-section > div > div > div > div > div > div.post-content > h4 > a").each(function () {
                 articleSource2['url'].push($(this).attr("href"));
                 console.log("This should be a URL: ", $(this).attr("href"))
             });
