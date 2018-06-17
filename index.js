@@ -16,7 +16,7 @@ router.get('/articles', (req, res, next) => {
       return res.status(500).json({success: false, data: err});
     }
     // SQL Query > Select Data
-    const query = client.query('SELECT * FROM articles ORDER BY id DESC;');
+    const query = client.query('SELECT * FROM articles ORDER BY id ASC;');
     // Stream results back one row at a time
     query.on('row', (row) => {
       results.push(row);
