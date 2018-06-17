@@ -38,7 +38,7 @@ function scrapeSneakerNews() {
                 var cleanedTitle = ""
                 cleanedTitle = $(this).text().trim();
                 articleSource1['title'].push(cleanedTitle);
-                console.log("This should be a title Sneakernews: ", cleanedTitle)
+                console.log("This should be a title Sneaker news: ", cleanedTitle)
             });
             // extract article images
             $(".image-box > a > img").each(function () {
@@ -91,6 +91,7 @@ function scrapeSneakerNews() {
                 //console.log("This should be article URL: ", $(this).attr("href"))
             });
             var orderdArticles = {};
+            console.log("this is what is in articleSource2 :", articleSource2)
             setArticlesToCorrectOrder(articleSource1, articleSource2);
             window.setTimeout(function () {
                 console.log("Exiting now.")
