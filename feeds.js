@@ -28,23 +28,25 @@ function scrapeSneakerNews() {
     'url': [],
     };
     jsdom.env({
-        url: "https://nicekicks.com/2018/",
+        url: "https://solecollector.com/news/",
         scripts: ["http://code.jquery.com/jquery.js"],
         done: function (err, window) {
             var $ = window.$;
             // extract article titles
-            $(".entry-title").each(function () {
+            $("feed-item-grid > div > h2 > a").each(function () {
                 console.log("This should be article titles nicekicks: ", articleSource2['title'])
                 articleSource2['title'].push( $(this).text());
             });
             // extract article images
-            $(".attachment-medium.size-medium.wp-post-image").each(function () {
+            $("feed-item-grid > div > div.feed-item__image-container.embed-responsive.embed-responsive-16by9 > a > img").each(function () {
                 articleSource2['image'].push($(this).attr("src"));
-                console.log("This should be article images hypebeast: ", $(this).attr("src"));
+                console.log("This should be article images hypebeast: ", $(this).attr("currentSrc"));
             });
                 // // extract article URL
-            $("header > h2 > a").each(function () {
-                articleSource2['url'].push($(this).attr("href"));
+            $("feed-item-grid > div > h2 > a").each(function () {
+                articleUrl = "https://solecollector.com/news/" + $(this).attr("href")
+                console.log("This is the article url: ", articleUrl)
+                articleSource2['url'].push(articleUrl);
                 //console.log("This should be article URL: ", $(this).attr("href"))
             });
 
