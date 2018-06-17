@@ -34,20 +34,19 @@ function scrapeSneakerNews() {
             var $ = window.$;
             // extract article titles
             $(".title").each(function () {
-                console.log("This should be article titles nicekicks: ", articleSource2['title'])
                 articleSource1['title'].push( $(this).text());
+                console.log("This should be article titles hypebeast: ", $(this).text())
             });
             // extract article images
-            $(".img-fluid.lazy-load.loaded").each(function () {
-                articleSource1['image'].push($(this).attr("style"));
-                console.log("This should be article images hypebeast: ", $(this).attr("src"));
+            $(".post-box-image-container.fixed-ratio-3-2 > a > img").each(function () {
+                articleSource1['image'].push($(this).attr("data-src"));
+                console.log("This should be article images hypebeast: ", $(this).attr("data-src"));
             });
                 // // extract article URL
             $(".title").each(function () {
-                console.log("This should be article URL: ", $(this).attr("href"))
                 articleSource1['url'].push($(this).attr("href"));
+                console.log("This should be article URL: ", $(this).attr("href"))
             });
-
         }
     })
 
@@ -69,12 +68,12 @@ function scrapeSneakerNews() {
                 var cleanedTitle = ""
                 cleanedTitle = $(this).text().trim();
                 articleSource2['title'].push(cleanedTitle);
-                console.log("This should be a title Sneaker news: ", cleanedTitle)
+                // console.log("This should be a title Sneaker news: ", cleanedTitle)
             });
             // extract article images
             $(".image-box > a > img").each(function () {
                 articleSource2['image'].push(encodeURI($(this).attr("src")));
-                console.log("This should be a image URL: ", encodeURI($(this).attr("src")))
+                // console.log("This should be a image URL: ", encodeURI($(this).attr("src")))
             });
             // extract article author
             $(".posted-by > a").each(function () {
@@ -83,15 +82,15 @@ function scrapeSneakerNews() {
             // extract article date
             $(".post-content > div > span:nth-child(2)").each(function () {
                 articleSource2['date'].push($(this).first().text().replace(/(?=BY).*/, ""));
-                console.log("This should be a date: ", $(this).first().text().replace(/(?=BY).*/, ""))
+                // console.log("This should be a date: ", $(this).first().text().replace(/(?=BY).*/, ""))
             });
             // extract article URL
             $(".sneaker-post-section > div > div > div > div > div > div.post-content > h4 > a").each(function () {
                 articleSource2['url'].push($(this).attr("href"));
-                console.log("This should be a URL: ", $(this).attr("href"))
+                // console.log("This should be a URL: ", $(this).attr("href"))
             });
             var orderdArticles = {};
-            console.log("this is what is in articleSource2 :", articleSource2)
+            // console.log("this is what is in articleSource2 :", articleSource2)
             console.log("this is what is in articleSource1 :", articleSource1)
             setArticlesToCorrectOrder(articleSource1, articleSource2);
             window.setTimeout(function () {
