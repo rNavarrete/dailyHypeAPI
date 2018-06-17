@@ -20,6 +20,39 @@ module.exports.releases = function () {
 }
 
 function scrapeSneakerNews() {
+
+
+    var articleSource2 = {
+    'title': [],
+    'author': [],
+    'image': [],
+    'date': [],
+    'url': [],
+    };
+    jsdom.env({
+        url: "https://nicekicks.com/2018/",
+        scripts: ["http://code.jquery.com/jquery.js"],
+        done: function (err, window) {
+            var $ = window.$;
+            // extract article titles
+            $(".entry-title").each(function () {
+                console.log("This should be article titles nicekicks: ", articleSource2['title'])
+                articleSource2['title'].push( $(this).text());
+            });
+            // extract article images
+            $(".attachment-medium.size-medium.wp-post-image").each(function () {
+                articleSource2['image'].push($(this).attr("src"));
+                console.log("This should be article images hypebeast: ", $(this).attr("src"));
+            });
+                // // extract article URL
+            $("header > h2 > a").each(function () {
+                articleSource2['url'].push($(this).attr("href"));
+                //console.log("This should be article URL: ", $(this).attr("href"))
+            });
+
+        }
+    })
+
     var articleSource1 = {
     'title': [],
     'author': [],
@@ -59,36 +92,6 @@ function scrapeSneakerNews() {
             $(".post-content > h4 > a").each(function () {
                 articleSource1['url'].push($(this).attr("href"));
                 console.log("This should be a URL: ", $(this).attr("href"))
-            });
-        }
-    })
-
-    var articleSource2 = {
-    'title': [],
-    'author': [],
-    'image': [],
-    'date': [],
-    'url': [],
-    };
-    jsdom.env({
-        url: "https://nicekicks.com/2018/",
-        scripts: ["http://code.jquery.com/jquery.js"],
-        done: function (err, window) {
-            var $ = window.$;
-            // extract article titles
-            $(".entry-title").each(function () {
-                console.log("This should be article titles nicekicks: ", articleSource2['title'])
-                articleSource2['title'].push( $(this).text());
-            });
-            // extract article images
-            $(".attachment-medium.size-medium.wp-post-image").each(function () {
-                articleSource2['image'].push($(this).attr("src"));
-                console.log("This should be article images hypebeast: ", $(this).attr("src"));
-            });
-                // // extract article URL
-            $("header > h2 > a").each(function () {
-                articleSource2['url'].push($(this).attr("href"));
-                //console.log("This should be article URL: ", $(this).attr("href"))
             });
             var orderdArticles = {};
             console.log("this is what is in articleSource2 :", articleSource2)
