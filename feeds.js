@@ -88,7 +88,7 @@ function scrapeSneakerNews() {
                 // // extract article URL
             $("header > h2 > a").each(function () {
                 articleSource2['url'].push($(this).attr("href"));
-                console.log("This should be article URL: ", $(this).attr("href"))
+                //console.log("This should be article URL: ", $(this).attr("href"))
             });
             var orderdArticles = {};
             setArticlesToCorrectOrder(articleSource1, articleSource2);
@@ -136,7 +136,7 @@ function setArticlesToCorrectOrder(source1, source2) {
         orderedArticles['url'].push(source2['url'][i]);
     });
     orderedArticles['url'] = orderedArticles['url'].filter(Boolean);
-    //console.log("That's my bro: "+ orderedArticles)
+    console.log("That's my bro: "+ orderedArticles)
     // insert the articles into the database:
     var pool = new pg.Pool(config)
     pool.connect(function(err, client, done) {
