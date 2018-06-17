@@ -82,7 +82,7 @@ function scrapeSneakerNews() {
                 console.log("This should be a author: ", $(this).text())
             });
             // extract article date
-            $(".post-content > div > span").each(function () {
+            $(".post-content > div > span:nth-child(2)").each(function () {
                 articleSource1['date'].push($(this).first().text().replace(/(?=BY).*/, ""));
                 console.log("This should be a date: ", $(this).first().text().replace(/(?=BY).*/, ""))
             });
