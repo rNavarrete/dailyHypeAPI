@@ -60,34 +60,33 @@ function scrapeSneakerNews() {
     };
     var year = new Date().getFullYear();
     jsdom.env({
-        url: "https://nicekicks.com/"+ year,
+        url: "https://sneakernews.com/"+ year,
         scripts: ["http://code.jquery.com/jquery.js"],
         done: function (err, window) {
             var $ = window.$;
             // extract article titles
-            $(".entry-title").each(function () {
+            $(".post-content").each(function () {
                 var cleanedTitle = ""
                 cleanedTitle = $(this).text().trim();
                 articleSource2['title'].push(cleanedTitle);
                 console.log("This should be a title Sneaker news: ", cleanedTitle)
             });
             // extract article images
-            $(".post-thumbnail").each(function () {
+            $(".image-box > a > img").each(function () {
                 articleSource2['image'].push(encodeURI($(this).attr("src")));
                 console.log("This should be a image URL: ", encodeURI($(this).attr("src")))
             });
             // extract article author
             $(".posted-by > a").each(function () {
                 articleSource2['author'].push("N/A")
-                //console.log("This should be a author: ", $(this).text())
             });
             // extract article date
-            $(".meta-date").each(function () {
+            $(".post-content > div > span").each(function () {
                 articleSource2['date'].push($(this).first().text().replace(/(?=BY).*/, ""));
                 console.log("This should be a date: ", $(this).first().text().replace(/(?=BY).*/, ""))
             });
             // extract article URL
-            $(".entry-title").each(function () {
+            $(".post-content").each(function () {
                 articleSource2['url'].push($(this).attr("href"));
                 console.log("This should be a URL: ", $(this).attr("href"))
             });
