@@ -139,7 +139,7 @@ app.post('/search', (req, res, next) => {
       }
       // SQL Query > Select Data
       // const query = client.query('SELECT * FROM articles ORDER BY id DESC;');
-      client.query('SELECT * FROM articles ORDER BY id ASC LIMIT 50;', (err, r) => {
+      client.query('SELECT * FROM articles ORDER BY id DESC LIMIT 50;', (err, r) => {
       // Stream results back one row at a time
         r.rows.forEach(row => {
           results.push(row);
