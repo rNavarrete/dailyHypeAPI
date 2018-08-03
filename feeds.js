@@ -217,7 +217,7 @@ function setArticlesToCorrectOrder(source1, source2) {
                 }
              });
                 // extract article title
-
+            console.log("These are the releases before we send to update table: ", releases)
             updateReleasesTable(releases)
             window.setTimeout(function () {
                 console.log("Exiting now.")
