@@ -199,20 +199,21 @@ function setArticlesToCorrectOrder(source1, source2) {
                     if (parseFloat(releaseDate) >= parseFloat(date) ) {
                      console.log("From within the conditional: ", $(this).text().trim().replace(/[^\d.-]/g, '').substring(0, 5))
                     releases['releaseDate'].push($(this).text().trim().replace(/[^\d.-]/g, '').substring(0, 5));
+                    console.log("Release date being added to releases data structure: ", $(this).find(" h2 > a").text())
 
                     //$(".content-box > h2 > a").each(function () {
                         releases['model'].push($(this).find("h2 > a").text());
-                        //  console.log("Shoe model: ", $(this).find(" h2 > a").text())
+                        console.log("Shoe model: ", $(this).find(" h2 > a").text())
                     //});
                     // extract article price
                     //$(".release-price").each(function () {
                         releases['price'].push($(this).find(".release-price").text());
-                        //  console.log("Shoe price: ", $(this).find(".release-price").text())
+                        console.log("Shoe price: ", $(this).find(".release-price").text())
                     //});
                     // extract shoe image
                     //$(".image-box > a > img").each(function () {
                         releases['image'].push($(this).find(".image-box > a > img").attr("src"));
-                        //  console.log("shoe image link: ", $(this).find(".image-box > a > img").attr("src"))
+                        console.log("shoe image link: ", $(this).find(".image-box > a > img").attr("src"))
                     //});
                 }
              });
