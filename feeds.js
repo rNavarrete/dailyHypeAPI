@@ -192,7 +192,9 @@ function setArticlesToCorrectOrder(source1, source2) {
                     var releaseDate = $(this).find("div.release-date-and-rating > span").text().trim().replace(/[^\d.-]/g, '').replace(/0/g, '').substring(0, 4)
                     // console.log("This is the release date: ", releaseDate)
                     // grab the current date
-                    var date = new Date();
+                    var now = new Date();
+                    var date = new Date(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(),  now.getUTCHours() -7, now.getUTCMinutes(), now.getUTCSeconds());
+                    //date.setHours(date.getHours() - 4);
                     console.log("This is the raw date: ", date)
                     date = (date.getMonth() + 1) + "." + date.getDate();
                     console.log("This is the current date: ", date)
