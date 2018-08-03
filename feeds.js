@@ -193,8 +193,8 @@ function setArticlesToCorrectOrder(source1, source2) {
                     // console.log("This is the release date: ", releaseDate)
                     // grab the current date
                     var date = new Date();
-                    date = (date.getMonth() + 1) + "." + date.getDate();
                     console.log("This is the raw date: ", date)
+                    date = (date.getMonth() + 1) + "." + date.getDate();
                     console.log("This is the current date: ", date)
                     console.log("This is the releaseDate date: ", releaseDate)
                     if (parseFloat(releaseDate) >= parseFloat(date) ) {
