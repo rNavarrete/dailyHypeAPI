@@ -121,8 +121,8 @@ function setArticlesToCorrectOrder(source1, source2) {
         'url': [],
         'source': []
     };
-    console.log("source1: ", source1)
-    console.log("source2: ", source2)
+    //console.log("source1: ", source1)
+    //console.log("source2: ", source2)
     source2['title'].map(function (e, i) {
         orderedArticles['title'].push(source1['title'][i]);
         orderedArticles['title'].push(source2['title'][i]);
@@ -194,9 +194,10 @@ function setArticlesToCorrectOrder(source1, source2) {
                     // grab the current date
                     var date = new Date();
                     date = (date.getMonth() + 1) + "." + date.getDate();
-                    // console.log("This is the current date: ", date)
-                if (parseFloat(releaseDate) >= parseFloat(date) ) {
-                    // console.log("From within the conditional: ", $(this).text().trim().replace(/[^\d.-]/g, '').replace(/0/g, '').substring(0, 4))
+                    console.log("This is the current date: ", date)
+                    console.log("This is the releaseDate date: ", releaseDate)
+                    if (parseFloat(releaseDate) >= parseFloat(date) ) {
+                     console.log("From within the conditional: ", $(this).text().trim().replace(/[^\d.-]/g, '').substring(0, 5))
                     releases['releaseDate'].push($(this).text().trim().replace(/[^\d.-]/g, '').substring(0, 5));
 
                     //$(".content-box > h2 > a").each(function () {
@@ -239,7 +240,7 @@ function updateReleasesTable(releaseData) {
         client.query("DELETE FROM releases;", function (err, result) {
             if (err) throw err;
         });
-
+        console.log("This is the release data: ",releaseData)
         // SQL Query > Insert Data
         for (var i = 0; i < releaseData['model'].length; i++) {
             const query = {
