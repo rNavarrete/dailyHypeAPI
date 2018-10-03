@@ -99,7 +99,8 @@ function scrapeSneakerNews() {
                  console.log("This should be article images hypebeast: ", $(this).attr("data-src"));
             });
                 // // extract article URL
-            $(".title").each(function () {
+            $("#latest-posts > div > div > div.post-box-content-container > div.post-box-content-title > a").each(function () {
+            //$(".title").each(function () {
                 articleSource2['url'].push($(this).attr("href"));
                 console.log("This should be article URL hypebeast: ", $(this).attr("href"))
             });
