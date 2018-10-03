@@ -49,22 +49,22 @@ function scrapeSneakerNews() {
                 var cleanedTitle = ""
                 cleanedTitle = $(this).text().trim();
                 articleSource1['title'].push(cleanedTitle);
-                // console.log("This should be a title Sneakernews: ", cleanedTitle)
+                 console.log("This should be a title Sneakernews: ", cleanedTitle)
             });
             // extract article images
             $(".image-box > a > img").each(function () {
                 articleSource1['image'].push(encodeURI($(this).attr("src")));
-                // console.log("This should be a image URL: ", encodeURI($(this).attr("src")))
+                 console.log("This should be a image URL: ", encodeURI($(this).attr("src")))
             });
             // extract article author
             $(".posted-by > a").each(function () {
                 articleSource1['author'].push($(this).text())
-                // console.log("This should be a author: ", $(this).text())
+                 console.log("This should be a author: ", $(this).text())
             });
             // extract article date
             $(".date-and-name > p > span").each(function () {
                 articleSource1['date'].push($(this).first().text().replace(/(?=BY).*/, ""));
-                // console.log("This should be a date: ", $(this).first().text().replace(/(?=BY).*/, ""))
+                 console.log("This should be a date: ", $(this).first().text().replace(/(?=BY).*/, ""))
             });
                 // // extract article URL
             $(".post-content > h4 > a").each(function () {
@@ -87,14 +87,16 @@ function scrapeSneakerNews() {
         done: function (err, window) {
             var $ = window.$;
             // extract article titles
-            $(".title").each(function () {
+            $("#latest-posts > div > div > div.post-box-content-container > div.post-box-content-title > a").each(function () {
                 articleSource2['title'].push( $(this).text());
-                // console.log("This should be article titles hypebeast: ", $(this).text())
+                 console.log("This should be article titles hypebeast: ", $(this).text())
             });
             // extract article images
-            $(".post-box-image-container.fixed-ratio-3-2 > a > img").each(function () {
+            $("#latest-posts > div > div > div.post-box-image-container.fixed-ratio-3-2 > a > img").each(function () {
+            //$("#latest-posts > div > div > div.post-box-image-container.fixed-ratio-3-2 > a > img").each(function () {
+            //$(".post-box-image-container.fixed-ratio-3-2 > a > img").each(function () {
                 articleSource2['image'].push($(this).attr("data-src"));
-                // console.log("This should be article images hypebeast: ", $(this).attr("data-src"));
+                 console.log("This should be article images hypebeast: ", $(this).attr("data-src"));
             });
                 // // extract article URL
             $(".title").each(function () {
