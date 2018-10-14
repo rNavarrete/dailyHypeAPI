@@ -49,27 +49,27 @@ function scrapeSneakerNews() {
                 var cleanedTitle = ""
                 cleanedTitle = $(this).text().trim();
                 articleSource1['title'].push(cleanedTitle);
-                 console.log("This should be a title Sneakernews: ", cleanedTitle)
+                //console.log("This should be a title Sneakernews: ", cleanedTitle)
             });
             // extract article images
             $(".image-box > a > img").each(function () {
                 articleSource1['image'].push(encodeURI($(this).attr("src")));
-                 console.log("This should be a image URL: ", encodeURI($(this).attr("src")))
+                 //console.log("This should be a image URL: ", encodeURI($(this).attr("src")))
             });
             // extract article author
             $(".posted-by > a").each(function () {
                 articleSource1['author'].push($(this).text())
-                 console.log("This should be a author: ", $(this).text())
+                 //console.log("This should be a author: ", $(this).text())
             });
             // extract article date
             $(".date-and-name > p > span").each(function () {
                 articleSource1['date'].push($(this).first().text().replace(/(?=BY).*/, ""));
-                 console.log("This should be a date: ", $(this).first().text().replace(/(?=BY).*/, ""))
+                 //console.log("This should be a date: ", $(this).first().text().replace(/(?=BY).*/, ""))
             });
                 // // extract article URL
             $(".post-content > h4 > a").each(function () {
                 articleSource1['url'].push($(this).attr("href"));
-                console.log("This should be the sneakernews title URL: ", $(this).attr("href"))
+                //console.log("This should be the sneakernews title URL: ", $(this).attr("href"))
             });
             // setArticlesToCorrectOrder(articleSource1, articleSource2);
             // var orderdArticles = {};
@@ -89,20 +89,20 @@ function scrapeSneakerNews() {
             // extract article titles
             $("#latest-posts > div > div > div.post-box-content-container > div.post-box-content-title > a").each(function () {
                 articleSource2['title'].push( $(this).text());
-                 console.log("This should be article titles hypebeast: ", $(this).text())
+                 //console.log("This should be article titles hypebeast: ", $(this).text())
             });
             // extract article images
             $("#latest-posts > div > div > div.post-box-image-container.fixed-ratio-3-2 > a > img").each(function () {
             //$("#latest-posts > div > div > div.post-box-image-container.fixed-ratio-3-2 > a > img").each(function () {
             //$(".post-box-image-container.fixed-ratio-3-2 > a > img").each(function () {
                 articleSource2['image'].push($(this).attr("data-src"));
-                 console.log("This should be article images hypebeast: ", $(this).attr("data-src"));
+                 //console.log("This should be article images hypebeast: ", $(this).attr("data-src"));
             });
                 // // extract article URL
             $("#latest-posts > div > div > div.post-box-content-container > div.post-box-content-title > a").each(function () {
             //$(".title").each(function () {
                 articleSource2['url'].push($(this).attr("href"));
-                console.log("This should be article URL hypebeast: ", $(this).attr("href"))
+                //console.log("This should be article URL hypebeast: ", $(this).attr("href"))
             });
             var orderdArticles = {};
             setArticlesToCorrectOrder(articleSource2, articleSource1);
@@ -152,7 +152,7 @@ function setArticlesToCorrectOrder(source1, source2) {
         orderedArticles['url'].push(source2['url'][i]);
     });
     orderedArticles['url'] = orderedArticles['url'].filter(Boolean);
-    console.log("That's my bro: "+ orderedArticles)
+    //console.log("That's my bro: "+ orderedArticles)
     // insert the articles into the database:
     var pool = new pg.Pool(config)
     pool.connect(function(err, client, done) {
@@ -192,8 +192,9 @@ function setArticlesToCorrectOrder(source1, source2) {
                 // extract release date
                 $(".releases-box").each(function () {
                     // grab the release date of the article
-                    var releaseDate = $(this).find("div.release-date-and-rating > span").text().trim().replace(/[^\d.-]/g, '').replace(/0/g, '').substring(0, 4)
-                    // console.log("This is the release date: ", releaseDate)
+                    var releaseDate = $(this).find("div.release-date-and-rating > span").text().trim().replace(/[^\d.-]/g, '')
+                        //.replace(/0/g, '').substring(0, 4)
+                    console.log("This is the release date: ", releaseDate)
                     // grab the current date
                     var now = new Date();
                     var date = new Date(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(),  now.getUTCHours() -7, now.getUTCMinutes(), now.getUTCSeconds());
@@ -202,6 +203,8 @@ function setArticlesToCorrectOrder(source1, source2) {
                     date = (date.getMonth() + 1) + "." + date.getDate();
                     console.log("This is the current date: ", date)
                     console.log("This is the releaseDate date: ", releaseDate)
+                    console.log(parseFloat(releaseDate))
+                    console.log(parseFloat(date))
                     if (parseFloat(releaseDate) >= parseFloat(date) ) {
                      console.log("From within the conditional: ", $(this).text().trim().replace(/[^\d.-]/g, '').substring(0, 5))
                     releases['releaseDate'].push($(this).text().trim().replace(/[^\d.-]/g, '').substring(0, 5));
