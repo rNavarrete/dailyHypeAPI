@@ -177,6 +177,36 @@ app.post('/search', (req, res, next) => {
       return res.status(200).json({ success: true });
       });
     });
+  });
+
+  app.post('/like', (req, res, next) => {
+    // Grab data from http request
+    console.log(req.body)
+    const data = {id: req.body.id, like: req.body.like};
+    // Get a Postgres client from the connection pool
+    var pool = new pg.Pool(config)
+    pool.connect(function(err, client, done) {
+      // Handle connection errors
+      if(err) {
+        done();
+        console.log(err);
+        return res.status(500).json({success: false, data: err});
+      }
+      var query   =   'UPDATE articles SET likes = likes + 1 WHERE id = ($1) AND likes = ($2)'
+      var values = [data.id, data.view]
+      // SQL Query > Insert Data
+      // const query = client.query('UPDATE articles SET viewcount = viewcount + 1 WHERE id = ($1) AND viewcount = ($2)',
+      client.query(query, values, (err, r) => {
+        r.rows.forEach(row=>{
+          results.push(row);
+        });
+      client.end();
+      return res.status(200).json({ success: true });
+      });
+    });
 });
+
+
+
 
 app.listen(process.env.PORT || 5000)
